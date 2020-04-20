@@ -1,6 +1,7 @@
 module Main where
 
-import Lib
+import Text.UbuntuCVE.Parser
+import Data.UbuntuCVE
 
 import System.Environment
 import Control.Monad

@@ -1,4 +1,4 @@
-module Lib
+module Text.UbuntuCVE.Parser
     ( cveParser
     , parseFile
 
@@ -12,46 +12,15 @@ module Lib
     , notes
     , releasepackagestatus
 
-    , Status (..)
-    , Content (..)
     ) where
+
 
 import Data.List
 import System.Exit
 import Text.Parsec
 import Text.Parsec.String
 import Data.Functor
-
-type Package = String
-type Release = String
-type Notes = String
-
-data Status =
-  -- Affected version does not exist in the archive
-    DNE
-
-  -- Still undecided
-  | NEEDSTRIAGE
-
-  -- Not vulnerable
-  | NOTAFFECTED
-
-  -- Package is vulnerable
-  | NEEDED
-  | ACTIVE
-  | IGNORED -- Very low priority
-  | PENDING
-  | DEFERRED
-
-  -- Fixed
-  | RELEASED
-  | RELEASEDESM
-  deriving (Show, Eq)
-
-data Content = Metadata String String
-             | ReleasePackageStatus Release Package Status (Maybe Notes)
-             | Ignored String
-             deriving (Show, Eq)
+import Data.UbuntuCVE
 
 --
 -- HELPERS
