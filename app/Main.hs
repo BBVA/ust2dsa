@@ -6,15 +6,13 @@ import Data.UbuntuCVE
 import System.Environment
 import Control.Monad
 import Data.Bifunctor
+import Data.Aeson (encode, decode)
+import qualified Data.ByteString.Lazy.Internal as BS
+import Data.Maybe
+
 
 main :: IO ()
 main = do args <- getArgs
-          parsed <- mapM (parseFile cveParser) args
-          let lengths = countT (0, 0, 0) <$> parsed
-          mapM_ (putStrLn . showlength) (zip args lengths)
-  where
-    showlength (name, l) = name ++ ": " ++ (show l)
-    countT cs [] = cs
-    countT (d, m, c) ((ReleasePackageStatus _ _ _ _):xs) = countT (d+1, m, c) xs
-    countT (d, m, c) ((Metadata _ _):xs) = countT (d, m+1, c) xs
-    countT (d, m, c) ((Ignored _):xs) = countT (d, m, c+1) xs
+          parsed <- mapM (parseFile cveParser) (drop 1 args)
+          let cves = catMaybes $ toValidCVE <$> fillParsedCVE emptyParsedCVE <$> parsed
+          putStrLn $ cvesToDebsecan (args !! 0) cves
