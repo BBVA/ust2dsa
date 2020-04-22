@@ -15,3 +15,4 @@ fillStaged' s ((Ignored _):ps) = fillStaged' s ps
 fillStaged' s ((Metadata k v):ps)
   | k == "Candidate"   = fillStaged' s{name=Just v} ps
   | k == "Description" = fillStaged' s{description=Just v} ps
+  | otherwise          = fillStaged' s ps
