@@ -7,3 +7,4 @@ import Data.UbuntuSecurityTracker.CVE.Staged
 
 fillStaged :: [Token] -> Staged
 fillStaged [] = emptyStaged
+fillStaged [Metadata "Candidate" "foo"] = emptyStaged{name=Just "foo"}
