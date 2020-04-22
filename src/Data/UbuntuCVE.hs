@@ -81,7 +81,7 @@ fillStaged cve@Staged{affectedPackages=ap} ((RPS r p s n):cs) =
      Nothing    -> fillStaged cve cs
      (Just aps) -> fillStaged cve{affectedPackages=insert (affectedPackage aps) ap} cs
   where
-    affectedPackage s = AffectedPackage {release=r, name=p, status=s}
+    affectedPackage s = AffectedPackage {release=r, packageName=p, status=s}
 fillStaged cve (_:cs) = fillStaged cve cs
 
 -------
@@ -137,7 +137,7 @@ toValidCVE _ = Nothing
 -- <package_name> -> [..] -> (unstable_version, [other_versions])
 getUnstableVersion :: String -> [AffectedPackage] -> Maybe String
 getUnstableVersion _ [] = Nothing
-getUnstableVersion s (AffectedPackage{name=n, release=r, status=(NONVULNERABLE v)}:aps)
+getUnstableVersion s (AffectedPackage{packageName=n, release=r, status=(NONVULNERABLE v)}:aps)
   | s==n && r == "upstream" = Just v
   | otherwise            = getUnstableVersion s aps
 getUnstableVersion s (_:aps) = getUnstableVersion s aps
@@ -145,7 +145,7 @@ getUnstableVersion s (_:aps) = getUnstableVersion s aps
 
 getOtherVersions :: String -> [AffectedPackage] -> [String]
 getOtherVersions _ [] = []
-getOtherVersions s (AffectedPackage{name=n, release=r, status=(NONVULNERABLE v)}:aps)
+getOtherVersions s (AffectedPackage{packageName=n, release=r, status=(NONVULNERABLE v)}:aps)
   | s==n && r /= "upstream" = v:(getOtherVersions s aps)
   | otherwise            = getOtherVersions s aps
 getOtherVersions s (_:aps) = getOtherVersions s aps
@@ -153,11 +153,11 @@ getOtherVersions s (_:aps) = getOtherVersions s aps
 getPackageNames :: [AffectedPackage] -> [String]
 getPackageNames xs = nub $ getName <$> xs
   where
-    getName AffectedPackage{name=n} = n
+    getName AffectedPackage{packageName=n} = n
 
 isFixAvailable :: String -> String -> [AffectedPackage] -> Bool
 isFixAvailable n r [] = False
-isFixAvailable n r (AffectedPackage{name=n', release=r', status=(NONVULNERABLE _)}:aps)
+isFixAvailable n r (AffectedPackage{packageName=n', release=r', status=(NONVULNERABLE _)}:aps)
   | n == n' && r == r' = True
   | otherwise = isFixAvailable n r aps
 isFixAvailable n r (_:aps) = isFixAvailable n r aps
