@@ -13,5 +13,5 @@ import Data.Maybe
 main :: IO ()
 main = do args <- getArgs
           parsed <- mapM (parseFile cveParser) (drop 1 args)
-          let cves = catMaybes $ toValidCVE <$> fillParsedCVE emptyParsedCVE <$> parsed
+          let cves = catMaybes $ toValidCVE <$> fillStaged emptyStaged <$> parsed
           putStrLn $ cvesToDebsecan (args !! 0) cves

@@ -2,11 +2,11 @@
 
 module Data.UbuntuCVE
     ( Status (..)
-    , ParsedCVE (..)
+    , Staged (..)
     , CVE (..)
     , toValidCVE
-    , emptyParsedCVE
-    , fillParsedCVE
+    , emptyStaged
+    , fillStaged
     , Priority (..)
     , cs
     , cs2
@@ -25,14 +25,7 @@ import qualified Data.Text as T
 import Data.Versions
 import Data.Char
 import Data.UbuntuSecurityTracker.CVE.Token
-
-data Priority = L | M | H deriving (Show, Eq, Ord)
-
-
-data AffectedPackageStatus = VULNERABLE String
-                           | NONVULNERABLE String
-                           deriving (Show, Eq, Ord)
-
+import Data.UbuntuSecurityTracker.CVE.Staged
 
 isValidVersion :: String -> Bool
 isValidVersion s = case parsedVersion of
@@ -71,49 +64,25 @@ toAffectedPackageStatus RELEASEDESM (Just txt)
   | otherwise          = Nothing
 toAffectedPackageStatus _ _ = Nothing
 
-data AffectedPackage =
-     AffectedPackage { release :: Release
-                     , name :: Package
-                     , status :: AffectedPackageStatus
-                     } deriving (Show, Eq, Ord)
-
-
-data ParsedCVE =
-     ParsedCVE { name :: Maybe String
-               , description :: Maybe String
-               , priority :: Maybe Priority
-               , isRemote :: Maybe Bool
-               , affectedPackages :: [AffectedPackage]
-               } deriving (Show)
-
-
-emptyParsedCVE = ParsedCVE { name = Nothing
-                           , description = Nothing
-                           , priority = Nothing
-                           , isRemote = Nothing
-                           , affectedPackages = []
-                           }
-
-
-fillParsedCVE :: ParsedCVE -> [Content] -> ParsedCVE
-fillParsedCVE cve [] = cve
-fillParsedCVE cve ((Metadata key value):cs)
-  | key == "Candidate" = fillParsedCVE cve{name=Just value} cs
-  | key == "Description" = fillParsedCVE cve{description=Just value} cs
+fillStaged :: Staged -> [Content] -> Staged
+fillStaged cve [] = cve
+fillStaged cve ((Metadata key value):cs)
+  | key == "Candidate" = fillStaged cve{name=Just value} cs
+  | key == "Description" = fillStaged cve{description=Just value} cs
   | key == "Priority" = case value of
-                          "low" -> fillParsedCVE cve{priority=Just L} cs
-                          "medium" -> fillParsedCVE cve{priority=Just M} cs
-                          "high" -> fillParsedCVE cve{priority=Just H} cs
-                          _ -> fillParsedCVE cve cs
-  | otherwise          = fillParsedCVE cve cs
--- fillParsedCVE cve@ParsedCVE{affectedPackages=ap} ((ReleasePackageStatus "upstream" p s n):cs) = fillParsedCVE cve cs
-fillParsedCVE cve@ParsedCVE{affectedPackages=ap} ((ReleasePackageStatus r p s n):cs) =
+                          "low" -> fillStaged cve{priority=Just L} cs
+                          "medium" -> fillStaged cve{priority=Just M} cs
+                          "high" -> fillStaged cve{priority=Just H} cs
+                          _ -> fillStaged cve cs
+  | otherwise          = fillStaged cve cs
+-- fillStaged cve@Staged{affectedPackages=ap} ((ReleasePackageStatus "upstream" p s n):cs) = fillStaged cve cs
+fillStaged cve@Staged{affectedPackages=ap} ((ReleasePackageStatus r p s n):cs) =
    case toAffectedPackageStatus s n of
-     Nothing    -> fillParsedCVE cve cs
-     (Just aps) -> fillParsedCVE cve{affectedPackages=insert (affectedPackage aps) ap} cs
+     Nothing    -> fillStaged cve cs
+     (Just aps) -> fillStaged cve{affectedPackages=insert (affectedPackage aps) ap} cs
   where
     affectedPackage s = AffectedPackage {release=r, name=p, status=s}
-fillParsedCVE cve (_:cs) = fillParsedCVE cve cs
+fillStaged cve (_:cs) = fillStaged cve cs
 
 -------
 
@@ -144,8 +113,8 @@ data CVE =
          } deriving (Show)
 
 
-toValidCVE :: ParsedCVE -> Maybe CVE
-toValidCVE ParsedCVE{ name=Just n
+toValidCVE :: Staged -> Maybe CVE
+toValidCVE Staged{ name=Just n
                     , description=Just d
                     , priority=pri
                     , isRemote=ir
