@@ -2,7 +2,6 @@
 
 module Data.UbuntuCVE
     ( Status (..)
-    , Content (..)
     , ParsedCVE (..)
     , CVE (..)
     , toValidCVE
@@ -25,41 +24,7 @@ import Data.List
 import qualified Data.Text as T
 import Data.Versions
 import Data.Char
-
-
-type Package = String
-type Release = String
-type Notes = String
-
-data Status =
-  -- Affected version does not exist in the archive
-    DNE
-
-  -- Still undecided
-  | NEEDSTRIAGE
-
-  -- Not vulnerable
-  | NOTAFFECTED
-
-  -- Vulnerable, but not important
-  | IGNORED
-
-  -- Package is vulnerable
-  | NEEDED
-  | ACTIVE
-  | PENDING
-  | DEFERRED
-
-  -- Fixed
-  | RELEASED
-  | RELEASEDESM
-  deriving (Show, Eq, Ord)
-
-data Content = Metadata String String
-             | ReleasePackageStatus Release Package Status (Maybe Notes)
-             | Ignored String
-             deriving (Show, Eq, Ord)
-
+import Data.UbuntuSecurityTracker.CVE.Token
 
 data Priority = L | M | H deriving (Show, Eq, Ord)
 
@@ -135,7 +100,7 @@ fillParsedCVE cve [] = cve
 fillParsedCVE cve ((Metadata key value):cs)
   | key == "Candidate" = fillParsedCVE cve{name=Just value} cs
   | key == "Description" = fillParsedCVE cve{description=Just value} cs
-  | key == "Priority" = case value of 
+  | key == "Priority" = case value of
                           "low" -> fillParsedCVE cve{priority=Just L} cs
                           "medium" -> fillParsedCVE cve{priority=Just M} cs
                           "high" -> fillParsedCVE cve{priority=Just H} cs
@@ -160,7 +125,7 @@ cs = [ Metadata "Candidate" "CVE-2020-11111"
      , ReleasePackageStatus "devel" "openssl" RELEASED (Just "1248")
      , ReleasePackageStatus "devel" "linux" RELEASED (Just "5555")
      ]
- 
+
 cs2 = [ Metadata "Candidate" "CVE-2020-11111"
      , Metadata "Priority" "medium"
      , Metadata "Description" "Something bad happened, bla, blah, blah, blah, blah, blah bla, blah, blah, blah, blah, blahbla, blah, blah, blah, blah, blah ..."
@@ -198,7 +163,7 @@ toValidCVE _ = Nothing
 --     intercalate "," [n, flags, uv, ov]
 --   where
 --     flags = undefined
-    
+
 
 -- <package_name> -> [..] -> (unstable_version, [other_versions])
 getUnstableVersion :: String -> [AffectedPackage] -> Maybe String

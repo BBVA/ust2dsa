@@ -21,6 +21,7 @@ import Text.Parsec
 import Text.Parsec.String
 import Data.Functor
 import Data.UbuntuCVE
+import Data.UbuntuSecurityTracker.CVE.Token
 
 --
 -- HELPERS

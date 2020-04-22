@@ -2,6 +2,7 @@ module Text.UbuntuSecurityTracker.CVE.ParserImplSpec where
 
 import Text.UbuntuSecurityTracker.CVE.ParserImpl
 import Data.UbuntuCVE
+import Data.UbuntuSecurityTracker.CVE.Token
 
 import Text.Parsec
 import Test.Hspec.Parsec
@@ -163,7 +164,7 @@ spec = do
       , (Metadata "Patches_jackson-databind" "")
       , (ReleasePackageStatus "upstream" "jackson-databind" RELEASED (Just "2.9.10.4"))
       ]
-    
+
     it "should fail on malformed entry" $ do
       cveParser'
       `shouldFailOn`
