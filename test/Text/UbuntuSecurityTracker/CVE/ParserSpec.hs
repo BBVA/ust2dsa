@@ -1,6 +1,6 @@
-module Text.UbuntuCVE.ParserSpec where
+module Text.UbuntuSecurityTracker.CVE.ParserSpec where
 
-import Text.UbuntuCVE.Parser
+import Text.UbuntuSecurityTracker.CVE.Parser
 import Data.UbuntuCVE
 
 import Text.Parsec
@@ -149,7 +149,7 @@ spec = do
         linecomment' "#this is a comment"
         `shouldParse`
         Ignored "this is a comment"
-        
+
   describe "PARSING *UBUNTU CVE TRACKER* FILE FORMAT" $ do
     let cveParser' = parse cveParser ""
 
@@ -163,5 +163,3 @@ spec = do
       , (Metadata "Patches_jackson-databind" "")
       , (ReleasePackageStatus "upstream" "jackson-databind" RELEASED (Just "2.9.10.4"))
       ]
-      
-

@@ -1,4 +1,4 @@
-module Text.UbuntuCVE.Parser
+module Text.UbuntuSecurityTracker.CVE.Parser
     ( cveParser
     , parseFile
 

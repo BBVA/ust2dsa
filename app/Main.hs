@@ -1,6 +1,6 @@
 module Main where
 
-import Text.UbuntuCVE.Parser
+import Text.UbuntuSecurityTracker.CVE.Parser
 import Data.UbuntuCVE
 
 import System.Environment
