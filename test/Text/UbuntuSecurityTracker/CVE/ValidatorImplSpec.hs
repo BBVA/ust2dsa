@@ -14,7 +14,15 @@ spec = do
   describe "FILL STAGED STRUCT" $ do
     it "should return an empty Staged on empty Token list" $ do
       fillStaged [] `shouldBe` emptyStaged
+
     it "should fill the name field with the `Candidate` Metadata" $ do
-      fillStaged [Metadata "Candidate" "foo"]
+      fillStaged [ Metadata "Candidate" "foo" ]
       `shouldBe`
       emptyStaged{name=Just "foo"}
+
+    it "should ignore any comments" $ do
+      fillStaged [ Ignored "This is a comment"
+                 , Metadata "Candidate" "bar"]
+      `shouldBe`
+      emptyStaged{name=Just "bar"}
+
