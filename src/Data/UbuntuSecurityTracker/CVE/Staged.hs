@@ -28,7 +28,7 @@ data Staged =
                , priority :: Maybe Priority
                , isRemote :: Maybe Bool
                , affectedPackages :: [AffectedPackage]
-               } deriving (Show)
+               } deriving (Show, Eq)
 
 
 emptyStaged = Staged { name = Nothing
