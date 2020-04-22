@@ -106,7 +106,7 @@ releasepackagestatus = releasepackagestatus' <?> "release/package/status informa
 
 
 -- PARSES THE UBUNTU CVE TRACKER FILE FORMAT
-cveParser = validline `sepEndBy` many newline
+cveParser = (validline `sepEndBy` many newline) <* eof
   where
     validline = try keyvalue
             <|> try releasepackagestatus
