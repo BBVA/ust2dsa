@@ -20,6 +20,11 @@ spec = do
       `shouldBe`
       emptyStaged{name=Just "foo"}
 
+    it "should fill the description field with the `Description` Metadata" $ do
+      fillStaged [ Metadata "Description" "foo" ]
+      `shouldBe`
+      emptyStaged{description=Just "foo"}
+
     it "should ignore any comments" $ do
       fillStaged [ Ignored "This is a comment"
                  , Metadata "Candidate" "bar"]
