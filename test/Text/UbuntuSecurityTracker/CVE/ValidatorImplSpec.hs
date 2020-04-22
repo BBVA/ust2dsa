@@ -31,3 +31,7 @@ spec = do
       `shouldBe`
       emptyStaged{name=Just "bar"}
 
+    it "should ignore any other metadata" $ do
+      fillStaged [ Metadata "Foo" "bar"]
+      `shouldBe`
+      emptyStaged
