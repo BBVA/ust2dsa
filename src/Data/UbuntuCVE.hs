@@ -1,4 +1,4 @@
-{-# LANGUAGE DuplicateRecordFields, DeriveGeneric, OverloadedStrings #-}
+{-# LANGUAGE DuplicateRecordFields, OverloadedStrings #-}
 
 module Data.UbuntuCVE
     ( Status (..)
@@ -23,8 +23,6 @@ module Data.UbuntuCVE
 
 import Data.List
 import qualified Data.Text as T
-import Data.Aeson
-import GHC.Generics
 import Data.Versions
 import Data.Char
 
@@ -65,19 +63,11 @@ data Content = Metadata String String
 
 data Priority = L | M | H deriving (Show, Eq, Ord)
 
-instance ToJSON Priority where
-    -- this generates a Value
-    toJSON p =
-        object ["priority" .= (show p)]
 
 data AffectedPackageStatus = VULNERABLE String
                            | NONVULNERABLE String
-                           deriving (Generic, Show, Eq, Ord)
+                           deriving (Show, Eq, Ord)
 
-instance ToJSON AffectedPackageStatus where
-    -- this generates a Value
-    toJSON p =
-        object ["status" .= (show p)]
 
 isValidVersion :: String -> Bool
 isValidVersion s = case parsedVersion of
@@ -120,14 +110,7 @@ data AffectedPackage =
      AffectedPackage { release :: Release
                      , name :: Package
                      , status :: AffectedPackageStatus
-                     } deriving (Generic, Show, Eq, Ord)
-
-instance ToJSON AffectedPackage where
-    -- this generates a Value
-    toJSON AffectedPackage{release=r, name=n, status=s} =
-        object ["release" .= r
-               ,"name" .= n
-               ,"status" .= s]
+                     } deriving (Show, Eq, Ord)
 
 
 data ParsedCVE =
@@ -136,15 +119,8 @@ data ParsedCVE =
                , priority :: Maybe Priority
                , isRemote :: Maybe Bool
                , affectedPackages :: [AffectedPackage]
-               } deriving (Generic, Show)
+               } deriving (Show)
 
-instance ToJSON ParsedCVE where
-    -- this generates a Value
-    toJSON ParsedCVE{name=n, description=d, priority=p, affectedPackages=ap} =
-        object ["name" .= n
-               ,"description" .= d
-               ,"priority" .= p
-               ,"affected" .= ap]
 
 emptyParsedCVE = ParsedCVE { name = Nothing
                            , description = Nothing
@@ -165,7 +141,7 @@ fillParsedCVE cve ((Metadata key value):cs)
                           "high" -> fillParsedCVE cve{priority=Just H} cs
                           _ -> fillParsedCVE cve cs
   | otherwise          = fillParsedCVE cve cs
-fillParsedCVE cve@ParsedCVE{affectedPackages=ap} ((ReleasePackageStatus "upstream" p s n):cs) = fillParsedCVE cve cs
+-- fillParsedCVE cve@ParsedCVE{affectedPackages=ap} ((ReleasePackageStatus "upstream" p s n):cs) = fillParsedCVE cve cs
 fillParsedCVE cve@ParsedCVE{affectedPackages=ap} ((ReleasePackageStatus r p s n):cs) =
    case toAffectedPackageStatus s n of
      Nothing    -> fillParsedCVE cve cs
@@ -200,7 +176,7 @@ data CVE =
          , priority :: Maybe Priority
          , isRemote :: Maybe Bool
          , affectedPackages :: [AffectedPackage]
-         } deriving (Generic, Show)
+         } deriving (Show)
 
 
 toValidCVE :: ParsedCVE -> Maybe CVE
@@ -228,7 +204,7 @@ toValidCVE _ = Nothing
 getUnstableVersion :: String -> [AffectedPackage] -> Maybe String
 getUnstableVersion _ [] = Nothing
 getUnstableVersion s (AffectedPackage{name=n, release=r, status=(NONVULNERABLE v)}:aps)
-  | s==n && r == "devel" = Just v
+  | s==n && r == "upstream" = Just v
   | otherwise            = getUnstableVersion s aps
 getUnstableVersion s (_:aps) = getUnstableVersion s aps
 
@@ -236,7 +212,7 @@ getUnstableVersion s (_:aps) = getUnstableVersion s aps
 getOtherVersions :: String -> [AffectedPackage] -> [String]
 getOtherVersions _ [] = []
 getOtherVersions s (AffectedPackage{name=n, release=r, status=(NONVULNERABLE v)}:aps)
-  | s==n && r /= "devel" = v:(getOtherVersions s aps)
+  | s==n && r /= "upstream" = v:(getOtherVersions s aps)
   | otherwise            = getOtherVersions s aps
 getOtherVersions s (_:aps) = getOtherVersions s aps
 

@@ -6,7 +6,6 @@ import Data.UbuntuCVE
 import System.Environment
 import Control.Monad
 import Data.Bifunctor
-import Data.Aeson (encode, decode)
 import qualified Data.ByteString.Lazy.Internal as BS
 import Data.Maybe
 
