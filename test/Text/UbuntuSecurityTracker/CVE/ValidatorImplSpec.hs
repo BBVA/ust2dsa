@@ -25,6 +25,26 @@ spec = do
       `shouldBe`
       emptyStaged{description=Just "foo"}
 
+    it "should fill the priority field with the `Priority` Metadata (low)" $ do
+      fillStaged [ Metadata "Priority" "low" ]
+      `shouldBe`
+      emptyStaged{priority=Just L}
+
+    it "should fill the priority field with the `Priority` Metadata (medium)" $ do
+      fillStaged [ Metadata "Priority" "medium" ]
+      `shouldBe`
+      emptyStaged{priority=Just M}
+
+    it "should fill the priority field with the `Priority` Metadata (high)" $ do
+      fillStaged [ Metadata "Priority" "high" ]
+      `shouldBe`
+      emptyStaged{priority=Just H}
+
+    it "should ignore the priority field when it is something unknown" $ do
+      fillStaged [ Metadata "Priority" "very-low-maybe-dontknow" ]
+      `shouldBe`
+      emptyStaged{priority=Nothing}
+
     it "should ignore any comments" $ do
       fillStaged [ Ignored "This is a comment"
                  , Metadata "Candidate" "bar"]
