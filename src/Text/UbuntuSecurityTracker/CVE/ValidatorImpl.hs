@@ -11,5 +11,7 @@ fillStaged = fillStaged' emptyStaged
 
 fillStaged' :: Staged -> [Token] -> Staged
 fillStaged' s [] = s
-fillStaged' s ((Metadata "Candidate" v):ps) = fillStaged' s{name=Just v} ps
 fillStaged' s ((Ignored _):ps) = fillStaged' s ps
+fillStaged' s ((Metadata k v):ps)
+  | k == "Candidate"   = fillStaged' s{name=Just v} ps
+  | k == "Description" = fillStaged' s{description=Just v} ps
