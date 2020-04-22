@@ -12,5 +12,5 @@ spec :: Spec
 spec = do
 
   describe "FILL STAGED STRUCT" $ do
-    it "should return and empty Staged on empty Token list" $ do
+    it "should return an empty Staged on empty Token list" $ do
       fillStaged [] `shouldBe` emptyStaged
