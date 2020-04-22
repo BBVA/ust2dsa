@@ -1,5 +1,5 @@
 module Data.UbuntuSecurityTracker.CVE.Token
-    ( Content (..)
+    ( Token (..)
     , Status (..)
     , Notes
     , Package
@@ -36,7 +36,7 @@ data Status =
 
 
 
-data Content = Metadata String String
-             | ReleasePackageStatus Release Package Status (Maybe Notes)
-             | Ignored String
-             deriving (Show, Eq, Ord)
+data Token = Metadata String String
+           | RPS Release Package Status (Maybe Notes)
+           | Ignored String
+           deriving (Show, Eq, Ord)

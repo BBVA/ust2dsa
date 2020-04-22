@@ -64,7 +64,7 @@ toAffectedPackageStatus RELEASEDESM (Just txt)
   | otherwise          = Nothing
 toAffectedPackageStatus _ _ = Nothing
 
-fillStaged :: Staged -> [Content] -> Staged
+fillStaged :: Staged -> [Token] -> Staged
 fillStaged cve [] = cve
 fillStaged cve ((Metadata key value):cs)
   | key == "Candidate" = fillStaged cve{name=Just value} cs
@@ -75,8 +75,8 @@ fillStaged cve ((Metadata key value):cs)
                           "high" -> fillStaged cve{priority=Just H} cs
                           _ -> fillStaged cve cs
   | otherwise          = fillStaged cve cs
--- fillStaged cve@Staged{affectedPackages=ap} ((ReleasePackageStatus "upstream" p s n):cs) = fillStaged cve cs
-fillStaged cve@Staged{affectedPackages=ap} ((ReleasePackageStatus r p s n):cs) =
+-- fillStaged cve@Staged{affectedPackages=ap} ((RPS "upstream" p s n):cs) = fillStaged cve cs
+fillStaged cve@Staged{affectedPackages=ap} ((RPS r p s n):cs) =
    case toAffectedPackageStatus s n of
      Nothing    -> fillStaged cve cs
      (Just aps) -> fillStaged cve{affectedPackages=insert (affectedPackage aps) ap} cs
@@ -90,16 +90,16 @@ cs = [ Metadata "Candidate" "CVE-2020-11111"
      , Metadata "Priority" "medium"
      , Metadata "Description" "Something bad happened, bla, blah, blah, blah, blah, blah bla, blah, blah, blah, blah, blahbla, blah, blah, blah, blah, blah ..."
      , Metadata "PublicDate" "2019-11-27 18:15:00 UTC"
-     , ReleasePackageStatus "bionic" "openssl" RELEASED (Just "1234")
-     , ReleasePackageStatus "devel" "openssl" RELEASED (Just "1248")
-     , ReleasePackageStatus "devel" "linux" RELEASED (Just "5555")
+     , RPS "bionic" "openssl" RELEASED (Just "1234")
+     , RPS "devel" "openssl" RELEASED (Just "1248")
+     , RPS "devel" "linux" RELEASED (Just "5555")
      ]
 
 cs2 = [ Metadata "Candidate" "CVE-2020-11111"
      , Metadata "Priority" "medium"
      , Metadata "Description" "Something bad happened, bla, blah, blah, blah, blah, blah bla, blah, blah, blah, blah, blahbla, blah, blah, blah, blah, blah ..."
      , Metadata "PublicDate" "2019-11-27 18:15:00 UTC"
-     , ReleasePackageStatus "bionic" "openssl" RELEASED (Just "1234")
+     , RPS "bionic" "openssl" RELEASED (Just "1234")
      ]
 
 --

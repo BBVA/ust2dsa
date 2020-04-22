@@ -100,7 +100,7 @@ releasepackagestatus = releasepackagestatus' <?> "release/package/status informa
       s <- status
       whitespaces
       ns <- notes `sepEndBy` whitespaces
-      let rps = ReleasePackageStatus r p s
+      let rps = RPS r p s
       if null ns
       then return $ rps Nothing
       else return $ rps (Just $ intercalate "\n" ns)

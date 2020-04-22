@@ -129,17 +129,17 @@ spec = do
       it "should parse releasepackagestatus info without comments" $ do
         releasepackagestatus' "release_package: DNE"
         `shouldParse`
-        ReleasePackageStatus "release" "package" DNE Nothing
+        RPS "release" "package" DNE Nothing
 
       it "should parse releasepackagestatus info with comments" $ do
         releasepackagestatus' "release_package: DNE (comment)"
         `shouldParse`
-        ReleasePackageStatus "release" "package" DNE (Just "comment")
+        RPS "release" "package" DNE (Just "comment")
 
       it "should parse releasepackagestatus info with multiple comments" $ do
         releasepackagestatus' "release_package: DNE (comment1) (comment2)"
         `shouldParse`
-        ReleasePackageStatus "release" "package" DNE (Just "comment1\ncomment2")
+        RPS "release" "package" DNE (Just "comment1\ncomment2")
 
   describe "PARSING COMMENTS" $ do
 
@@ -162,7 +162,7 @@ spec = do
       `shouldParse`
       [ (Metadata "Candidate" "CVE-2020-11111")
       , (Metadata "Patches_jackson-databind" "")
-      , (ReleasePackageStatus "upstream" "jackson-databind" RELEASED (Just "2.9.10.4"))
+      , (RPS "upstream" "jackson-databind" RELEASED (Just "2.9.10.4"))
       ]
 
     it "should fail on malformed entry" $ do
