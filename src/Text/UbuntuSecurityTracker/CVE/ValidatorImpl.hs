@@ -5,12 +5,12 @@ module Text.UbuntuSecurityTracker.CVE.ValidatorImpl
   , fillStaged
   ) where
 
+import Control.Monad
 import Data.UbuntuSecurityTracker.CVE.Token
 import Data.UbuntuSecurityTracker.CVE.Staged
 
 fillStaged :: [Token] -> Either String Staged
--- fillStaged = foldl honorToken emptyStaged
-fillStaged = undefined
+fillStaged = foldM honorToken emptyStaged
 
 -- TODO: Fill isRemote field when a CVSS parser is available
 honorToken :: Staged -> Token -> Either String Staged
