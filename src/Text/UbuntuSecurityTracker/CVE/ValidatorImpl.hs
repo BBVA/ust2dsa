@@ -1,3 +1,5 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module Text.UbuntuSecurityTracker.CVE.ValidatorImpl
   ( honorToken
   -- , fillStaged
@@ -13,9 +15,11 @@ import Data.UbuntuSecurityTracker.CVE.Staged
 honorToken :: Staged -> Token -> Either String Staged
 honorToken s (Ignored _) = Right s
 honorToken s (Metadata k v)
-  | k == "Candidate"                 = Right s{name=Just v}
-  | k == "Description"               = Right s{description=Just v}
-  | k == "Priority" && v == "high"   = Right s{priority=Just H}
-  | k == "Priority" && v == "medium" = Right s{priority=Just M}
-  | k == "Priority" && v == "low"    = Right s{priority=Just L}
-  | otherwise                        = Right s
+  | k == "Candidate"         = Right s{name=Just v}
+  | k == "Description"       = Right s{description=Just v}
+  | k == "Priority"          =
+         if | v == "high"   -> Right s{priority=Just H}
+            | v == "medium" -> Right s{priority=Just M}
+            | v == "low"    -> Right s{priority=Just L}
+            | otherwise     -> Left "unknown priority value"
+  | otherwise                = Right s
