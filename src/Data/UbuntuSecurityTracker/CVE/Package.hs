@@ -19,14 +19,14 @@ data Package =
     }
   deriving (Show, Eq, Ord)
 
-mapStatus :: T.Status -> Maybe String -> Status
-mapStatus (T.NEEDED) (Just s) = VULNERABLE s
-mapStatus (T.ACTIVE) (Just s) = VULNERABLE s
-mapStatus (T.PENDING) (Just s) = VULNERABLE s
-mapStatus (T.DEFERRED) (Just s) = VULNERABLE s
-mapStatus (T.DNE) (Just s) = NOTVULNERABLE s
-mapStatus (T.NEEDSTRIAGE) (Just s) = NOTVULNERABLE s
-mapStatus (T.NOTAFFECTED) (Just s) = NOTVULNERABLE s
-mapStatus (T.IGNORED) (Just s) = NOTVULNERABLE s
-mapStatus (T.RELEASED) (Just s) = NOTVULNERABLE s
-mapStatus (T.RELEASEDESM) (Just s) = NOTVULNERABLE s
+mapStatus :: T.Status -> Maybe String -> Maybe Status
+mapStatus (T.NEEDED) (Just s) = Just $ VULNERABLE s
+mapStatus (T.ACTIVE) (Just s) = Just $ VULNERABLE s
+mapStatus (T.PENDING) (Just s) = Just $ VULNERABLE s
+mapStatus (T.DEFERRED) (Just s) = Just $ VULNERABLE s
+mapStatus (T.DNE) (Just s) = Just $ NOTVULNERABLE s
+mapStatus (T.NEEDSTRIAGE) (Just s) = Just $ NOTVULNERABLE s
+mapStatus (T.NOTAFFECTED) (Just s) = Just $ NOTVULNERABLE s
+mapStatus (T.IGNORED) (Just s) = Just $ NOTVULNERABLE s
+mapStatus (T.RELEASED) (Just s) = Just $ NOTVULNERABLE s
+mapStatus (T.RELEASEDESM) (Just s) = Just $ NOTVULNERABLE s

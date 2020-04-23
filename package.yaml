@@ -52,4 +52,6 @@ tests:
     dependencies:
     - ubuntu-cve-tracker2debsecan
     - hspec
+    - QuickCheck
     - hspec-parsec
+    - generic-random

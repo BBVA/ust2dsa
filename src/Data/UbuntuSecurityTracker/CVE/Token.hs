@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Data.UbuntuSecurityTracker.CVE.Token
   ( Token(..)
   , Status(..)
@@ -5,6 +7,8 @@ module Data.UbuntuSecurityTracker.CVE.Token
   , Package
   , Release
   ) where
+
+import GHC.Generics
 
 type Package = String
 
@@ -29,7 +33,7 @@ data Status
   -- Fixed
   | RELEASED
   | RELEASEDESM
-  deriving (Show, Eq, Ord)
+  deriving (Generic, Show, Eq, Ord)
 
 data Token
   = Metadata String String
