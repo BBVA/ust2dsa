@@ -38,3 +38,6 @@ spec = do
     describe "when a version isn't provided" $ do
       it "should return Nothing" $ property $
         \x -> mapStatus x Nothing == Nothing
+    describe "when the version is invalid" $ do
+      it "should return Nothing" $ property $
+        \x -> mapStatus x (Just "this is not a version") == Nothing
