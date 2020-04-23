@@ -12,10 +12,10 @@ spec :: Spec
 spec = do
 
   describe "FILL STAGED STRUCT" $ do
-    -- it "should return an empty Staged on empty Token list" $ do
-    --   fillStaged []
-    --   `shouldBe`
-    --   Right emptyStaged
+    it "should return an empty Staged on empty Token list" $ do
+      fillStaged []
+      `shouldBe`
+      Right emptyStaged
 
     it "should fill the name field with the `Candidate` Metadata" $ do
       honorToken emptyStaged ( Metadata "Candidate" "foo" )
@@ -47,11 +47,11 @@ spec = do
       `shouldBe`
       Left "unknown priority value"
 
-    -- it "should ignore any comments" $ do
-    --   fillStaged [ Ignored "This is a comment"
-    --              , Metadata "Candidate" "bar"]
-    --   `shouldBe`
-    --   Right emptyStaged{name=Just "bar"}
+    it "should ignore any comments" $ do
+      fillStaged [ Ignored "This is a comment"
+                 , Metadata "Candidate" "bar"]
+      `shouldBe`
+      Right emptyStaged{name=Just "bar"}
 
     it "should ignore any other metadata" $ do
       honorToken emptyStaged ( Metadata "Foo" "bar" )
