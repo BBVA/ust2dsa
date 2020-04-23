@@ -20,6 +20,7 @@ data Package =
   deriving (Show, Eq, Ord)
 
 mapStatus :: T.Status -> Maybe String -> Maybe Status
+mapStatus _ Nothing = Nothing
 mapStatus (T.NEEDED) (Just s) = Just $ VULNERABLE s
 mapStatus (T.ACTIVE) (Just s) = Just $ VULNERABLE s
 mapStatus (T.PENDING) (Just s) = Just $ VULNERABLE s
