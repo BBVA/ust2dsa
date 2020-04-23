@@ -15,7 +15,6 @@ spec :: Spec
 spec = do
   describe "SIMPLIFY UBUNTU SECURITY TRACKER PACKAGE STATUS" $ do
     it "should map Ubuntu's package status to VULNERABLE" $ do
-      mapStatus T.DNE (Just "1.0") `shouldBe` (P.VULNERABLE "1.0")
       mapStatus T.NEEDED (Just "1.0") `shouldBe` (P.VULNERABLE "1.0")
       mapStatus T.ACTIVE (Just "1.0") `shouldBe` (P.VULNERABLE "1.0")
       mapStatus T.PENDING (Just "1.0") `shouldBe` (P.VULNERABLE "1.0")
