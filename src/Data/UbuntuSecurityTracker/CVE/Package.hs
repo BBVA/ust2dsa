@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedStrings#-}
+
 module Data.UbuntuSecurityTracker.CVE.Package
   ( Status(..)
   , Package(..)
@@ -5,8 +7,9 @@ module Data.UbuntuSecurityTracker.CVE.Package
   ) where
 
 import qualified Data.UbuntuSecurityTracker.CVE.Token as T (Status(..))
+import Data.Either (isRight)
 import Data.Versions (versioning)
-import Data.Text (pack)
+import Data.Text (pack, replace)
 
 data Status
   = VULNERABLE String
@@ -22,10 +25,7 @@ data Package =
   deriving (Show, Eq, Ord)
 
 isValidVersion :: String -> Bool
-isValidVersion s =
-  case versioning (pack s) of
-    Right _ -> True
-    Left _ -> False
+isValidVersion = isRight . versioning . replace "~" "+" . pack
 
 mapStatus :: T.Status -> Maybe String -> Maybe Status
 mapStatus _ Nothing = Nothing
