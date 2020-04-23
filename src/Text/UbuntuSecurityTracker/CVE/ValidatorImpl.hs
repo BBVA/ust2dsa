@@ -9,6 +9,7 @@ fillStaged :: [Token] -> Staged
 fillStaged = fillStaged' emptyStaged
 
 
+-- TODO: Fill isRemote field when a CVSS parser is available
 fillStaged' :: Staged -> [Token] -> Staged
 fillStaged' s [] = s
 fillStaged' s ((Ignored _):ps) = fillStaged' s ps
