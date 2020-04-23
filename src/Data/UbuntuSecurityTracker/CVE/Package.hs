@@ -1,6 +1,7 @@
 module Data.UbuntuSecurityTracker.CVE.Package
   ( Status(..)
   , Package(..)
+  , mapStatus
   ) where
 
 data Status
@@ -15,3 +16,5 @@ data Package =
     , status :: Status
     }
   deriving (Show, Eq, Ord)
+
+mapStatus = undefined
