@@ -4,6 +4,7 @@ import Data.UbuntuSecurityTracker.CVE.Package hiding (Package(..))
 import qualified Data.UbuntuSecurityTracker.CVE.Token as T (Status(..))
 import Data.UbuntuSecurityTracker.CVE.Token hiding (Status(..))
 
+import Data.Maybe (isJust)
 import Test.Hspec
 import Generic.Random
 import GHC.Generics
@@ -41,3 +42,6 @@ spec = do
     describe "when the version is invalid" $ do
       it "should return Nothing" $ property $
         \x -> mapStatus x (Just "this is not a version") == Nothing
+    describe "when the version contains tilde" $ do
+      it "should success" $ property $
+        \x -> isJust $ mapStatus x (Just "1.2.3~ubuntu1")
