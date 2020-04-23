@@ -5,6 +5,8 @@ module Data.UbuntuSecurityTracker.CVE.Package
   ) where
 
 import qualified Data.UbuntuSecurityTracker.CVE.Token as T (Status(..))
+import Data.Versions (versioning)
+import Data.Text (pack)
 
 data Status
   = VULNERABLE String
@@ -19,15 +21,26 @@ data Package =
     }
   deriving (Show, Eq, Ord)
 
+isValidVersion :: String -> Bool
+isValidVersion s =
+  case versioning (pack s) of
+    Right _ -> True
+    Left _ -> False
+
 mapStatus :: T.Status -> Maybe String -> Maybe Status
 mapStatus _ Nothing = Nothing
-mapStatus (T.NEEDED) (Just s) = Just $ VULNERABLE s
-mapStatus (T.ACTIVE) (Just s) = Just $ VULNERABLE s
-mapStatus (T.PENDING) (Just s) = Just $ VULNERABLE s
-mapStatus (T.DEFERRED) (Just s) = Just $ VULNERABLE s
-mapStatus (T.DNE) (Just s) = Just $ NOTVULNERABLE s
-mapStatus (T.NEEDSTRIAGE) (Just s) = Just $ NOTVULNERABLE s
-mapStatus (T.NOTAFFECTED) (Just s) = Just $ NOTVULNERABLE s
-mapStatus (T.IGNORED) (Just s) = Just $ NOTVULNERABLE s
-mapStatus (T.RELEASED) (Just s) = Just $ NOTVULNERABLE s
-mapStatus (T.RELEASEDESM) (Just s) = Just $ NOTVULNERABLE s
+mapStatus s (Just v)
+  | isValidVersion v = Just $ mapStatus' s v
+  | otherwise = Nothing
+
+mapStatus' :: T.Status -> String -> Status
+mapStatus' (T.NEEDED) s = VULNERABLE s
+mapStatus' (T.ACTIVE) s = VULNERABLE s
+mapStatus' (T.PENDING) s = VULNERABLE s
+mapStatus' (T.DEFERRED) s = VULNERABLE s
+mapStatus' (T.DNE) s = NOTVULNERABLE s
+mapStatus' (T.NEEDSTRIAGE) s = NOTVULNERABLE s
+mapStatus' (T.NOTAFFECTED) s = NOTVULNERABLE s
+mapStatus' (T.IGNORED) s = NOTVULNERABLE s
+mapStatus' (T.RELEASED) s = NOTVULNERABLE s
+mapStatus' (T.RELEASEDESM) s = NOTVULNERABLE s
