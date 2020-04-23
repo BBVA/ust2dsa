@@ -110,9 +110,13 @@ cveParser = (validline `sepEndBy` many newline) <* eof
   where
     validline = try keyvalue <|> try releasepackagestatus <|> try linecomment
 
-parseFile :: Parser a -> String -> IO a
-parseFile p fileName = parseFromFile p fileName >>= either report return
+parseFile :: Parser a -> String -> IO ()
+parseFile p fileName = parseFromFile p fileName >>= either report ok
   where
     report err = do
-      putStrLn $ "Error: " ++ show err
+      putStrLn $ show err
       exitFailure
+      return ()
+    ok _ = do
+      putStrLn $ show fileName ++ ": OK"
+      return ()
