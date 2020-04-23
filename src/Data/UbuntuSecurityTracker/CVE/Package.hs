@@ -34,13 +34,13 @@ mapStatus s (Just v)
   | otherwise = Nothing
 
 mapStatus' :: T.Status -> String -> Status
-mapStatus' (T.NEEDED) s = VULNERABLE s
-mapStatus' (T.ACTIVE) s = VULNERABLE s
-mapStatus' (T.PENDING) s = VULNERABLE s
-mapStatus' (T.DEFERRED) s = VULNERABLE s
-mapStatus' (T.DNE) s = NOTVULNERABLE s
-mapStatus' (T.NEEDSTRIAGE) s = NOTVULNERABLE s
-mapStatus' (T.NOTAFFECTED) s = NOTVULNERABLE s
-mapStatus' (T.IGNORED) s = NOTVULNERABLE s
-mapStatus' (T.RELEASED) s = NOTVULNERABLE s
-mapStatus' (T.RELEASEDESM) s = NOTVULNERABLE s
+mapStatus' T.NEEDED = VULNERABLE
+mapStatus' T.ACTIVE  = VULNERABLE
+mapStatus' T.PENDING = VULNERABLE
+mapStatus' T.DEFERRED = VULNERABLE
+mapStatus' T.DNE = NOTVULNERABLE
+mapStatus' T.NEEDSTRIAGE = NOTVULNERABLE
+mapStatus' T.NOTAFFECTED = NOTVULNERABLE
+mapStatus' T.IGNORED = NOTVULNERABLE
+mapStatus' T.RELEASED = NOTVULNERABLE
+mapStatus' T.RELEASEDESM = NOTVULNERABLE
