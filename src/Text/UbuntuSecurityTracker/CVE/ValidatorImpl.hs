@@ -6,18 +6,15 @@ import Data.UbuntuSecurityTracker.CVE.Token
 import Data.UbuntuSecurityTracker.CVE.Staged
 
 fillStaged :: [Token] -> Staged
-fillStaged = fillStaged' emptyStaged
-
+fillStaged = foldl honorToken emptyStaged
 
 -- TODO: Fill isRemote field when a CVSS parser is available
-fillStaged' :: Staged -> [Token] -> Staged
-fillStaged' s [] = s
-fillStaged' s ((Ignored _):ps) = fillStaged' s ps
-fillStaged' s ((Metadata k v):ps)
-  | k == "Candidate"                 = fill s{name=Just v}
-  | k == "Description"               = fill s{description=Just v}
-  | k == "Priority" && v == "high"   = fill s{priority=Just H}
-  | k == "Priority" && v == "medium" = fill s{priority=Just M}
-  | k == "Priority" && v == "low"    = fill s{priority=Just L}
-  | otherwise                        = fill s
-  where fill s' = fillStaged' s' ps
+honorToken :: Staged -> Token -> Staged
+honorToken s (Ignored _) = s
+honorToken s (Metadata k v)
+  | k == "Candidate"                 = s{name=Just v}
+  | k == "Description"               = s{description=Just v}
+  | k == "Priority" && v == "high"   = s{priority=Just H}
+  | k == "Priority" && v == "medium" = s{priority=Just M}
+  | k == "Priority" && v == "low"    = s{priority=Just L}
+  | otherwise                        = s
