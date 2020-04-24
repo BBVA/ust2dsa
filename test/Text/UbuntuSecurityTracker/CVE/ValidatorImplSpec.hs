@@ -5,6 +5,7 @@ import Data.UbuntuSecurityTracker.CVE.Token
 import qualified Data.UbuntuSecurityTracker.CVE.Package as P
 import Test.Hspec
 import Text.UbuntuSecurityTracker.CVE.ValidatorImpl
+import Data.Either
 
 main :: IO ()
 main = hspec spec
@@ -31,7 +32,8 @@ spec = do
          `shouldBe` Right emptyCVE {priority = Just H}
     it "should report when the priority field contains something unknown" $
       do honorToken emptyCVE (Metadata "Priority" "very-low-maybe-dontknow")
-         `shouldBe` Left "unknown priority value"
+         `shouldSatisfy`
+         isLeft
     it "should ignore any comments" $
       do fillCVE [Ignored "This is a comment", Metadata "Candidate" "bar"]
          `shouldBe` Right emptyCVE {name = Just "bar"}

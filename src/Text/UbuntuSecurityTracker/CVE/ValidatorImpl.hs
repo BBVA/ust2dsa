@@ -23,7 +23,7 @@ honorToken c (Metadata k v)
     if | v == "high" -> Right c {priority = Just H}
        | v == "medium" -> Right c {priority = Just M}
        | v == "low" -> Right c {priority = Just L}
-       | otherwise -> Left "unknown priority value"
+       | otherwise -> Left $ "unknown priority value '" ++ v ++ "'"
   | otherwise = Right c
 honorToken c (RPS r p s Nothing) = Right c
 honorToken c@CVE {affected = aps} (RPS r p s cv) =

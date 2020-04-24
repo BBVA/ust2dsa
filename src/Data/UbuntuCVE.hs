@@ -118,7 +118,13 @@ getPackageNames xs = nub $ getName <$> xs
   where
     getName P.Package {name = n} = n
 
-isFixAvailable :: String -> String -> [P.Package] -> Bool
+isFixAvailable :: String
+               -- ^ Package name
+               -> String
+               -- ^ Release
+               -> [P.Package]
+               -- ^ Affected Packages
+               -> Bool
 isFixAvailable n r [] = False
 isFixAvailable n r (P.Package { name = n'
                               , release = r'
