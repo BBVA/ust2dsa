@@ -11,7 +11,7 @@ data CVE =
     , isRemote :: Maybe Bool
     , affected :: [UP.Package]
     }
-  deriving (Show)
+  deriving (Show, Eq)
 
 mapCVE :: U.CVE -> Either String CVE
 mapCVE _ = Left "fubar cve"
