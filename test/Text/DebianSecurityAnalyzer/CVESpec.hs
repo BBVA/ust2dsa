@@ -36,7 +36,13 @@ spec = do
           , D.isRemote = Just True
           , D.affected = [UP.Package "baz" "qux" (UP.VULNERABLE "quux")]
           }
-    it "should inform about the missing fields" $
-      do case D.mapCVE completeCVE{ U.name=Nothing } of
-           Left txt -> "identifier" `isInfixOf` pack txt
-           Right _ -> False
+    describe "inform about the missing fields" $
+      do
+      it "should inform about missing identifier" $
+        do D.mapCVE completeCVE{ U.name=Nothing }
+          `shouldSatisfy`
+          (isInfixOf "identifier") . pack . fromLeft ""
+      it "should inform about missing description" $
+        do D.mapCVE completeCVE{ U.description=Nothing }
+          `shouldSatisfy`
+          (isInfixOf "description") . pack . fromLeft ""
