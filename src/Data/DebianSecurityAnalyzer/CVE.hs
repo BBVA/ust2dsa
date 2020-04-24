@@ -14,4 +14,10 @@ data CVE =
   deriving (Show, Eq)
 
 mapCVE :: U.CVE -> Either String CVE
+mapCVE U.CVE{ U.name=Just n
+              , U.description=Just d
+              , U.priority=p
+              , U.isRemote=r
+              , U.affected=aps
+              } = Right $ CVE n d p r aps
 mapCVE _ = Left "fubar cve"
