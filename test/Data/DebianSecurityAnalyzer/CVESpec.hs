@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Text.DebianSecurityAnalyzer.CVESpec where
+module Data.DebianSecurityAnalyzer.CVESpec where
 
 import qualified Data.DebianSecurityAnalyzer.CVE as D
 import qualified Data.UbuntuSecurityTracker.CVE as U
