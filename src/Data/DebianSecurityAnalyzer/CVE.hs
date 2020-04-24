@@ -14,4 +14,4 @@ data CVE =
   deriving (Show)
 
 mapCVE :: U.CVE -> Either String CVE
-mapCVE _ = undefined
+mapCVE _ = Left "fubar cve"
