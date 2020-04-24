@@ -20,5 +20,7 @@ mapCVE U.CVE{ U.name=Just n
             , U.isRemote=r
             , U.affected=aps
             } = Right $ CVE n d p r aps
+mapCVE U.CVE{ U.name=Nothing
+            , U.description=Nothing } = Left "CVE identifier and description missing"
 mapCVE U.CVE{ U.name=Nothing } = Left "CVE identifier missing"
-mapCVE _ = Left "fubar cve"
+mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
