@@ -36,3 +36,5 @@ spec = do
          `shouldBe` Right emptyCVE {name = Just "bar"}
     it "should ignore any other metadata" $
       do honorToken emptyCVE (Metadata "Foo" "bar") `shouldBe` Right emptyCVE
+    it "should drop when package metadata is incomplete" $
+      do honorToken emptyCVE (RPS "foo" "bar" DNE Nothing) `shouldBe` Right emptyCVE

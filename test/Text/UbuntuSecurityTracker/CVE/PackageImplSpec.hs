@@ -42,6 +42,9 @@ spec = do
     describe "when the version is invalid" $ do
       it "should return Nothing" $ property $
         \x -> mapStatus x (Just "this is not a version") == Nothing
-    describe "when the version contains tilde" $ do
-      it "should success" $ property $
+    describe "when the string contains tilde" $ do
+      it "should success when both fragments are valid versions" $ property $
         \x -> isJust $ mapStatus x (Just "1.2.3~ubuntu1")
+      it "should fail if any fragment is an invalid version" $ property $
+        \x -> mapStatus x (Just "1.2.3~foo bar") == Nothing
+      -- TODO: Support multiple versions
