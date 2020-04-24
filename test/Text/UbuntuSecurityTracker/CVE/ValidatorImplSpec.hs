@@ -39,6 +39,8 @@ spec = do
       do honorToken emptyCVE (Metadata "Foo" "bar") `shouldBe` Right emptyCVE
     it "should drop when package metadata is incomplete" $
       do honorToken emptyCVE (RPS "foo" "bar" DNE Nothing) `shouldBe` Right emptyCVE
+    it "should drop when package metadata is not a valid version" $
+      do honorToken emptyCVE (RPS "foo" "bar" DNE (Just "not a version")) `shouldBe` Right emptyCVE
     it "should add packages to affected list when package metadata sufficient" $
       do honorToken emptyCVE (RPS "foo" "bar" DNE (Just "1.0"))
          `shouldBe`

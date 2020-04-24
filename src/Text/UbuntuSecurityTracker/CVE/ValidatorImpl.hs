@@ -7,8 +7,8 @@ module Text.UbuntuSecurityTracker.CVE.ValidatorImpl
 
 import Control.Monad
 import Data.UbuntuSecurityTracker.CVE
-import Data.UbuntuSecurityTracker.CVE.Token
 import qualified Data.UbuntuSecurityTracker.CVE.Package as P
+import Data.UbuntuSecurityTracker.CVE.Token
 
 fillCVE :: [Token] -> Either String CVE
 fillCVE = foldM honorToken emptyCVE
@@ -26,6 +26,8 @@ honorToken c (Metadata k v)
        | otherwise -> Left "unknown priority value"
   | otherwise = Right c
 honorToken c (RPS r p s Nothing) = Right c
-honorToken c@CVE{affected=aps} (RPS r p s cv) = Right $ case P.mapStatus s cv of
-                                                  Nothing -> c
-                                                  Just st -> c{affected=(P.Package r p st:aps)}
+honorToken c@CVE {affected = aps} (RPS r p s cv) =
+  Right $
+  case P.mapStatus s cv of
+    Nothing -> c
+    Just st -> c {affected = (P.Package r p st : aps)}
