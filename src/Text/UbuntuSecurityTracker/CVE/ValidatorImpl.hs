@@ -24,3 +24,4 @@ honorToken s (Metadata k v)
        | v == "low" -> Right s {priority = Just L}
        | otherwise -> Left "unknown priority value"
   | otherwise = Right s
+honorToken s (RPS r p st Nothing) = Right s
