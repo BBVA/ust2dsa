@@ -29,10 +29,13 @@ mapCVE U.CVE{ U.name=Nothing } = Left "CVE identifier missing"
 mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
 
 getUnstableVersion :: String -> [UP.Package] -> Maybe String
-getUnstableVersion p = getFirst . foldMap notVulnerableVersion
+getUnstableVersion p = getFirst . foldMap notVulnerableVersion . filter isStable
   where
     notVulnerableVersion :: UP.Package -> First String
     notVulnerableVersion UP.Package{ UP.name=n
                                    , UP.status=UP.NOTVULNERABLE v }
                                    = First $ toMaybe (n == p) v
     notVulnerableVersion _ = First Nothing
+
+    isStable :: UP.Package -> Bool
+    isStable UP.Package{UP.release=r} = r == "devel" || r == "upstream"
