@@ -46,3 +46,7 @@ spec = do
         do D.mapCVE completeCVE{ U.description=Nothing }
           `shouldSatisfy`
           (isInfixOf "description") . pack . fromLeft ""
+  describe "EXTRACTING DEBSECAN FEATURES FROM CVE" $ do
+    describe "getUnstableVersion extracts the unstable version from a list of affected packages" $ do
+      it "should return Nothing when no packages are affected" $ do
+        D.getUnstableVersion "foo" [] `shouldBe` Nothing

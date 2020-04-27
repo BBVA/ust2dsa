@@ -24,3 +24,7 @@ mapCVE U.CVE{ U.name=Nothing
             , U.description=Nothing } = Left "CVE identifier and description missing"
 mapCVE U.CVE{ U.name=Nothing } = Left "CVE identifier missing"
 mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
+
+
+getUnstableVersion :: String -> [UP.Package] -> Maybe String
+getUnstableVersion = undefined
