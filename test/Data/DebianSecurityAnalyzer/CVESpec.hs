@@ -74,12 +74,12 @@ spec = do
         `shouldBe`
         Nothing
       it "should return devel version preferably" $ do
-        D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NOTVULNERABLE "2.0")
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "foo" (UP.NOTVULNERABLE "2.0")
                                    , UP.Package "devel" "foo" (UP.NOTVULNERABLE "1.0") ]
         `shouldBe`
         Just "1.0"
       it "should return devel version preferably (II)" $ do
-        D.getUnstableVersion "foo" [ UP.Package "devel" "bar" (UP.NOTVULNERABLE "1.0")
+        D.getUnstableVersion "foo" [ UP.Package "devel" "foo" (UP.NOTVULNERABLE "1.0")
                                    , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "2.0") ]
         `shouldBe`
         Just "1.0"
