@@ -1,5 +1,6 @@
 module Data.DebianSecurityAnalyzer.CVE where
 
+import Control.Applicative
 import Data.Foldable
 import Data.Maybe.HT
 import Data.Monoid
@@ -29,13 +30,14 @@ mapCVE U.CVE{ U.name=Nothing } = Left "CVE identifier missing"
 mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
 
 getUnstableVersion :: String -> [UP.Package] -> Maybe String
-getUnstableVersion p = getFirst . foldMap notVulnerableVersion . filter isStable
+getUnstableVersion p aps = ( first ((== "devel") . UP.release) aps )
+                       <|> ( first ((== "upstream") . UP.release) aps )
   where
+    first :: (UP.Package -> Bool) -> [UP.Package] -> Maybe String
+    first f xs = getFirst . foldMap notVulnerableVersion $ filter f xs
+
     notVulnerableVersion :: UP.Package -> First String
     notVulnerableVersion UP.Package{ UP.name=n
                                    , UP.status=UP.NOTVULNERABLE v }
                                    = First $ toMaybe (n == p) v
     notVulnerableVersion _ = First Nothing
-
-    isStable :: UP.Package -> Bool
-    isStable UP.Package{UP.release=r} = r == "devel" || r == "upstream"
