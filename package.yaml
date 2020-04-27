@@ -27,6 +27,7 @@ dependencies:
 - versions
 - text
 - optparse-generic
+- utility-ht
 
 library:
   source-dirs: src
