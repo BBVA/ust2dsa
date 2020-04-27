@@ -1,5 +1,7 @@
 module Data.DebianSecurityAnalyzer.CVE where
 
+import Data.Foldable
+import Data.Monoid
 import qualified Data.UbuntuSecurityTracker.CVE as U
 import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
 
@@ -25,12 +27,10 @@ mapCVE U.CVE{ U.name=Nothing
 mapCVE U.CVE{ U.name=Nothing } = Left "CVE identifier missing"
 mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
 
-
 getUnstableVersion :: String -> [UP.Package] -> Maybe String
-getUnstableVersion p [] = Nothing
-getUnstableVersion p ( UP.Package{ UP.name=n
-                                 , UP.status=UP.NOTVULNERABLE v }:ps )
-  | n == p = Just v
-  | otherwise = getUnstableVersion p ps
-getUnstableVersion p ( UP.Package{ UP.name=n
-                                 , UP.status=UP.VULNERABLE v }:ps ) = getUnstableVersion p ps
+getUnstableVersion p = getFirst . foldMap packageToString
+  where
+    packageToString :: UP.Package -> First String
+    packageToString UP.Package{UP.name=n, UP.status=UP.NOTVULNERABLE v} =
+      First $ if n == p then Just v else Nothing
+    packageToString _ = First Nothing
