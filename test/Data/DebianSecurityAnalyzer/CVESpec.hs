@@ -68,3 +68,8 @@ spec = do
                                    , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "1.0") ]
         `shouldBe`
         Just "1.0"
+      it "should return Nothing if devel and upstream suite are not present" $ do
+        D.getUnstableVersion "foo" [ UP.Package "bionic" "bar" (UP.VULNERABLE "2.0")
+                                   , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.0") ]
+        `shouldBe`
+        Nothing
