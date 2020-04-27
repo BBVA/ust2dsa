@@ -54,3 +54,7 @@ spec = do
         D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NOTVULNERABLE "1.0") ]
         `shouldBe`
         Nothing
+      it "should return Just the version when an affected package match the given name" $ do
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "foo" (UP.NOTVULNERABLE "1.0") ]
+        `shouldBe`
+        Just "1.0"
