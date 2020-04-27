@@ -32,3 +32,5 @@ getUnstableVersion p ( UP.Package{ UP.name=n
                                  , UP.status=UP.NOTVULNERABLE v }:ps )
   | n == p = Just v
   | otherwise = getUnstableVersion p ps
+getUnstableVersion p ( UP.Package{ UP.name=n
+                                 , UP.status=UP.VULNERABLE v }:ps ) = getUnstableVersion p ps
