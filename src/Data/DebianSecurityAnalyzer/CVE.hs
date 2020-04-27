@@ -27,4 +27,8 @@ mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
 
 
 getUnstableVersion :: String -> [UP.Package] -> Maybe String
-getUnstableVersion p _ = Nothing
+getUnstableVersion p [] = Nothing
+getUnstableVersion p [ UP.Package{ UP.name=n
+                                 , UP.status=UP.NOTVULNERABLE v } ]
+  | n == p = Just v
+  | otherwise = Nothing
