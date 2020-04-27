@@ -50,3 +50,7 @@ spec = do
     describe "getUnstableVersion extracts the unstable version from a list of affected packages" $ do
       it "should return Nothing when no packages are affected" $ do
         D.getUnstableVersion "foo" [] `shouldBe` Nothing
+      it "should return Nothing when affected packages don't match the given name" $ do
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NOTVULNERABLE "1.0") ]
+        `shouldBe`
+        Nothing
