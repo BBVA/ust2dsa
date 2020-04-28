@@ -110,3 +110,15 @@ spec = do
         D.getFlagUrgency (Just U.H)
         `shouldBe`
         'H'
+      it "should return an M for Medium Priority" $ do
+        D.getFlagUrgency (Just U.M)
+        `shouldBe`
+        'M'
+      it "should return an L for Low Priority" $ do
+        D.getFlagUrgency (Just U.L)
+        `shouldBe`
+        'L'
+      it "should return an <space> for Undefined Priority" $ do
+        D.getFlagUrgency Nothing
+        `shouldBe`
+        ' '
