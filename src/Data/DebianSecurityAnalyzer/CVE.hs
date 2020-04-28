@@ -73,5 +73,11 @@ getFlagIsRemote :: Maybe Bool -> Char
 getFlagIsRemote = maybe '?' (bool ' ' 'R')
 
 getFlagIsFixAvailable :: String -> String -> [UP.Package] -> Char
-getFlagIsFixAvailable _ _ [] = ' '
-getFlagIsFixAvailable _ _ _ = 'F'
+getFlagIsFixAvailable r p [] = ' '
+getFlagIsFixAvailable r p [ap] = bool 'F' ' ' (not $ isFixed ap)
+  where
+    isFixed =
+      combineFilters
+        [ (== r) . UP.release
+        , (== p) . UP.name
+        , not . UP.isVulnerable . UP.status ]
