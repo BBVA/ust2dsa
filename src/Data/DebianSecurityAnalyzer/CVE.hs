@@ -67,3 +67,6 @@ getOtherVersions p aps =
 
 getFlagUrgency :: Maybe U.Priority -> Char
 getFlagUrgency = maybe ' ' (head . show)
+
+getFlagIsRemote :: Maybe Bool -> Char
+getFlagIsRemote = undefined

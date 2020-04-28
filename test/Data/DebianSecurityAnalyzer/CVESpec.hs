@@ -105,7 +105,7 @@ spec = do
                                  , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "6.0") ]
         `shouldBe`
         ["5.0"]
-    describe "getFlagUrgency extracts the Urgency flag from a Priority" $ do
+    describe "getFlagUrgency extracts the Urgency flag" $ do
       it "should return an H for High Priority" $ do
         D.getFlagUrgency (Just U.H)
         `shouldBe`
@@ -122,3 +122,16 @@ spec = do
         D.getFlagUrgency Nothing
         `shouldBe`
         ' '
+    describe "getFlagIsRemote extracts the Remote flag" $ do
+      it "should return an R when it is remotely exploitable" $ do
+        D.getFlagIsRemote (Just True)
+        `shouldBe`
+        'R'
+      it "should return an <space> when it is not remotely exploitable" $do
+        D.getFlagIsRemote (Just False)
+        `shouldBe`
+        ' '
+      it "should return a ? when it is not defined" $do
+        D.getFlagIsRemote Nothing
+        `shouldBe`
+        '?'
