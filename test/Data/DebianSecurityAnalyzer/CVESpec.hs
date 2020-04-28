@@ -144,3 +144,15 @@ spec = do
         D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.0")]
         `shouldBe`
         'F'
+      it "should return an <space> when there is no fix available (status mismatch)" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "foo" (UP.VULNERABLE "1.0")]
+        `shouldBe`
+        ' '
+      it "should return an <space> when there is no fix available (package mismatch)" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "bar" (UP.NOTVULNERABLE "1.0")]
+        `shouldBe`
+        ' '
+      it "should return an <space> when there is no fix available (release mismatch)" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "trionic" "foo" (UP.NOTVULNERABLE "1.0")]
+        `shouldBe`
+        ' '
