@@ -127,11 +127,16 @@ spec = do
         D.getFlagIsRemote (Just True)
         `shouldBe`
         'R'
-      it "should return an <space> when it is not remotely exploitable" $do
+      it "should return an <space> when it is not remotely exploitable" $ do
         D.getFlagIsRemote (Just False)
         `shouldBe`
         ' '
-      it "should return a ? when it is not defined" $do
+      it "should return a ? when it is not defined" $ do
         D.getFlagIsRemote Nothing
         `shouldBe`
         '?'
+    describe "getFlagIsFixAvailable determines if there is a fixed version for this suite" $ do
+      it "should return an <space> when there is no fix available" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" []
+        `shouldBe`
+        ' '
