@@ -140,3 +140,7 @@ spec = do
         D.getFlagIsFixAvailable "bionic" "foo" []
         `shouldBe`
         ' '
+      it "should return an F when there is a fix available" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.0")]
+        `shouldBe`
+        'F'
