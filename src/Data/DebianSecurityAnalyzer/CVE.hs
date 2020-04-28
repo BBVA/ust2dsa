@@ -73,4 +73,4 @@ getFlagIsRemote :: Maybe Bool -> Char
 getFlagIsRemote = maybe '?' (bool ' ' 'R')
 
 getFlagIsFixAvailable :: String -> String -> [UP.Package] -> Char
-getFlagIsFixAvailable _ _ _ = undefined
+getFlagIsFixAvailable _ _ _ = ' '
