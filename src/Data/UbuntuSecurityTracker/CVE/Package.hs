@@ -3,6 +3,7 @@
 module Data.UbuntuSecurityTracker.CVE.Package
   ( Status(..)
   , Package(..)
+  , getVersion
   , mapStatus
   ) where
 
@@ -44,3 +45,7 @@ mapStatus' T.NOTAFFECTED = NOTVULNERABLE
 mapStatus' T.IGNORED = NOTVULNERABLE
 mapStatus' T.RELEASED = NOTVULNERABLE
 mapStatus' T.RELEASEDESM = NOTVULNERABLE
+
+getVersion :: Package -> String
+getVersion Package{status=VULNERABLE r} = r
+getVersion Package{status=NOTVULNERABLE r} = r
