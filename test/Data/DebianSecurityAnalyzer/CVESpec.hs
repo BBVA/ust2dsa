@@ -105,3 +105,8 @@ spec = do
                                  , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "6.0") ]
         `shouldBe`
         ["5.0"]
+    describe "getFlagUrgency extracts the Urgency flag from a Priority" $ do
+      it "should return an H for High Priority" $ do
+        D.getFlagUrgency (Just U.H)
+        `shouldBe`
+        'H'

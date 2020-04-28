@@ -64,3 +64,6 @@ getOtherVersions p aps =
         , (/= "devel") . UP.release
         , (/= "upstream") . UP.release
         ]
+
+getFlagUrgency :: Maybe U.Priority -> Char
+getFlagUrgency = undefined
