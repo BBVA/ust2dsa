@@ -67,7 +67,7 @@ Contains lines with five comma-separated fields.
 
   * The fourth flag is named **Fix Available**.
     - `F`: There is a fix available for the current suite (N/A in `GENERIC` db).
-    - *<anything else>*: There is no known fix available yet.
+    - *anything else*: There is no known fix available yet.
 
   Note: The flags are positional, so all of them must be present.  Typically,
   many of them will be simply space chars.
