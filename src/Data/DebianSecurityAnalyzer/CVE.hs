@@ -2,6 +2,7 @@ module Data.DebianSecurityAnalyzer.CVE where
 
 import Control.Applicative
 import Data.Foldable
+import Data.Maybe
 import Data.Maybe.HT
 import Data.Monoid
 import qualified Data.UbuntuSecurityTracker.CVE as U
@@ -18,46 +19,48 @@ data CVE =
   deriving (Show, Eq)
 
 mapCVE :: U.CVE -> Either String CVE
-mapCVE U.CVE{ U.name=Just n
-            , U.description=Just d
-            , U.priority=p
-            , U.isRemote=r
-            , U.affected=aps
-            } = Right $ CVE n d p r aps
-mapCVE U.CVE{ U.name=Nothing
-            , U.description=Nothing } = Left "CVE identifier and description missing"
-mapCVE U.CVE{ U.name=Nothing } = Left "CVE identifier missing"
-mapCVE U.CVE{ U.description=Nothing } = Left "CVE description missing"
+mapCVE U.CVE { U.name = Just n
+             , U.description = Just d
+             , U.priority = p
+             , U.isRemote = r
+             , U.affected = aps
+             } = Right $ CVE n d p r aps
+mapCVE U.CVE {U.name = Nothing, U.description = Nothing} =
+  Left "CVE identifier and description missing"
+mapCVE U.CVE {U.name = Nothing} = Left "CVE identifier missing"
+mapCVE U.CVE {U.description = Nothing} = Left "CVE description missing"
+
+combineFilters :: [a -> Bool] -> a -> Bool
+combineFilters filters x = and (filters <*> pure x)
 
 getUnstableVersion :: String -> [UP.Package] -> Maybe String
-getUnstableVersion p aps = ( first ((== "devel") . UP.release) aps )
-                       <|> ( first ((== "upstream") . UP.release) aps )
+getUnstableVersion p aps =
+  let develPackages = filter (isVulnerableRelease "devel") aps
+      upstreamPackages = filter (isVulnerableRelease "upstream") aps
+   in firstVersion develPackages <|> firstVersion upstreamPackages
   where
-    first :: (UP.Package -> Bool) -> [UP.Package] -> Maybe String
-    first f xs = getFirst . foldMap notVulnerableVersion $ filter f xs
-
-    notVulnerableVersion :: UP.Package -> First String
-    notVulnerableVersion UP.Package{ UP.name=n
-                                   , UP.status=UP.NOTVULNERABLE v }
-                                   = First $ toMaybe (n == p) v
-    notVulnerableVersion _ = First Nothing
+    firstVersion :: [UP.Package] -> Maybe String
+    firstVersion xs = (UP.getVersion . UP.status) <$> listToMaybe xs
+    isVulnerableRelease :: String -> (UP.Package -> Bool)
+    isVulnerableRelease r =
+      combineFilters
+        [ (== p) . UP.name
+        , not . UP.isVulnerable . UP.status
+        , (== r) . UP.release
+        ]
 
 getOtherVersions :: String -> [UP.Package] -> [String]
-getOtherVersions _ [] = []
-getOtherVersions p aps = UP.getVersion <$> filter ( and . applyAllFilters ) aps
+getOtherVersions p aps =
+  let stablePackages = filter isStableAndVulnerable aps
+   in version <$> stablePackages
   where
-    isNotVulnerable :: UP.Package -> Bool
-    isNotVulnerable UP.Package{UP.status=UP.VULNERABLE _} = False
-    isNotVulnerable UP.Package{UP.status=UP.NOTVULNERABLE _} = True
-
-    isNotInDevel :: UP.Package -> Bool
-    isNotInDevel = (/= "devel") . UP.release
-
-    isNotInUpstream :: UP.Package -> Bool
-    isNotInUpstream = (/= "upstream") . UP.release
-     
-    isSamePackage :: UP.Package -> Bool
-    isSamePackage = (== p) . UP.name
-
-    applyAllFilters :: UP.Package -> [Bool]
-    applyAllFilters = ( [ isSamePackage, isNotVulnerable, isNotInDevel, isNotInUpstream ] <*> ) . pure
+    version :: UP.Package -> String
+    version = UP.getVersion . UP.status
+    isStableAndVulnerable :: UP.Package -> Bool
+    isStableAndVulnerable =
+      combineFilters
+        [ (== p) . UP.name
+        , not . UP.isVulnerable . UP.status
+        , (/= "devel") . UP.release
+        , (/= "upstream") . UP.release
+        ]

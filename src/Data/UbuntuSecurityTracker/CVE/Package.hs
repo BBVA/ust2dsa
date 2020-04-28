@@ -2,6 +2,7 @@
 
 module Data.UbuntuSecurityTracker.CVE.Package
   ( Status(..)
+  , isVulnerable
   , Package(..)
   , getVersion
   , mapStatus
@@ -17,6 +18,14 @@ data Status
   | NOTVULNERABLE String
   deriving (Show, Eq, Ord)
 
+isVulnerable :: Status -> Bool
+isVulnerable (VULNERABLE _) = True
+isVulnerable (NOTVULNERABLE _) = False
+
+getVersion :: Status -> String
+getVersion (VULNERABLE r) = r
+getVersion (NOTVULNERABLE r) = r
+
 data Package =
   Package
     { release :: String
@@ -24,6 +33,7 @@ data Package =
     , status :: Status
     }
   deriving (Show, Eq, Ord)
+
 
 isValidVersion :: String -> Bool
 isValidVersion = isRight . versioning . replace "~" "+" . pack
@@ -46,6 +56,3 @@ mapStatus' T.IGNORED = NOTVULNERABLE
 mapStatus' T.RELEASED = NOTVULNERABLE
 mapStatus' T.RELEASEDESM = NOTVULNERABLE
 
-getVersion :: Package -> String
-getVersion Package{status=VULNERABLE r} = r
-getVersion Package{status=NOTVULNERABLE r} = r
