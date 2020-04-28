@@ -44,3 +44,4 @@ getUnstableVersion p aps = ( first ((== "devel") . UP.release) aps )
 
 getOtherVersions :: String -> [UP.Package] -> [String]
 getOtherVersions _ [] = []
+getOtherVersions _ aps = []
