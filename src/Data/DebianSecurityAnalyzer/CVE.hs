@@ -1,9 +1,9 @@
 module Data.DebianSecurityAnalyzer.CVE where
 
 import Control.Applicative
+import Data.Bool
 import Data.Foldable
 import Data.Maybe
-import Data.Bool
 import Data.Maybe.HT
 import Data.Monoid
 import qualified Data.UbuntuSecurityTracker.CVE as U
@@ -73,11 +73,14 @@ getFlagIsRemote :: Maybe Bool -> Char
 getFlagIsRemote = maybe '?' (bool ' ' 'R')
 
 getFlagIsFixAvailable :: String -> String -> [UP.Package] -> Char
-getFlagIsFixAvailable r p [] = ' '
-getFlagIsFixAvailable r p [ap] = bool 'F' ' ' (not $ isFixed ap)
+getFlagIsFixAvailable r p aps =
+  if null $ filter isFixed aps
+    then ' '
+    else 'F'
   where
     isFixed =
       combineFilters
         [ (== r) . UP.release
         , (== p) . UP.name
-        , not . UP.isVulnerable . UP.status ]
+        , not . UP.isVulnerable . UP.status
+        ]
