@@ -83,6 +83,6 @@ spec = do
                                    , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "2.0") ]
         `shouldBe`
         Just "1.0"
-    describe "getUnstableVersion extracts the unstable version from a list of affected packages" $ do
+    describe "getOtherVersions extracts the unstable version from a list of affected packages" $ do
       it "should return an empty list when no packages are affected" $ do
         D.getOtherVersions "foo" [] `shouldBe` []
