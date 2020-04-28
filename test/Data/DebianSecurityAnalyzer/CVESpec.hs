@@ -91,3 +91,12 @@ spec = do
                                  , UP.Package "bionic" "baz" (UP.NOTVULNERABLE "2.0") ]
         `shouldBe` 
         []
+      it "should return a list with the matching affected versions" $ do
+        D.getOtherVersions "foo" [ UP.Package "devel" "foo" (UP.VULNERABLE "1.0")
+                                 , UP.Package "bionic" "foo" (UP.VULNERABLE "2.0")
+                                 , UP.Package "upstream" "foo" (UP.VULNERABLE "3.0")
+                                 , UP.Package "devel" "foo" (UP.NOTVULNERABLE "4.0")
+                                 , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "5.0")
+                                 , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "6.0") ]
+        `shouldBe` 
+        ["5.0"]
