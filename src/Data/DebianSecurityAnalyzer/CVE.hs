@@ -43,4 +43,4 @@ getUnstableVersion p aps = ( first ((== "devel") . UP.release) aps )
     notVulnerableVersion _ = First Nothing
 
 getOtherVersions :: String -> [UP.Package] -> [String]
-getOtherVersions _ _ = undefined
+getOtherVersions _ [] = []
