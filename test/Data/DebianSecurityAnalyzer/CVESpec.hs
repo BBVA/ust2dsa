@@ -88,8 +88,8 @@ spec = do
         D.getOtherVersions "foo" [] `shouldBe` []
       it "should return an empty list when no packages match the given name" $ do
         D.getOtherVersions "foo" [ UP.Package "devel" "bar" (UP.NOTVULNERABLE "1.0")
-                                 , UP.Package "bionic" "baz" (UP.NOTVULNERABLE "2.0") ]
-        `shouldBe` 
+                                 , UP.Package "bionic" "baz" (UP.VULNERABLE "2.0") ]
+        `shouldBe`
         []
       it "should return a list with the matching affected versions" $ do
         D.getOtherVersions "foo" [ UP.Package "devel" "foo" (UP.VULNERABLE "1.0")
@@ -98,5 +98,5 @@ spec = do
                                  , UP.Package "devel" "foo" (UP.NOTVULNERABLE "4.0")
                                  , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "5.0")
                                  , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "6.0") ]
-        `shouldBe` 
+        `shouldBe`
         ["5.0"]
