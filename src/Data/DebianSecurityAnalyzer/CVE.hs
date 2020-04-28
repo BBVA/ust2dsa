@@ -41,3 +41,6 @@ getUnstableVersion p aps = ( first ((== "devel") . UP.release) aps )
                                    , UP.status=UP.NOTVULNERABLE v }
                                    = First $ toMaybe (n == p) v
     notVulnerableVersion _ = First Nothing
+
+getOtherVersions :: String -> [UP.Package] -> [String]
+getOtherVersions _ _ = undefined
