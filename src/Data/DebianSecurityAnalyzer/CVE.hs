@@ -66,4 +66,4 @@ getOtherVersions p aps =
         ]
 
 getFlagUrgency :: Maybe U.Priority -> Char
-getFlagUrgency = const 'H'
+getFlagUrgency = maybe ' ' (head . show)
