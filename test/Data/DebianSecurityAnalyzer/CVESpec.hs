@@ -86,3 +86,8 @@ spec = do
     describe "getOtherVersions extracts the unstable version from a list of affected packages" $ do
       it "should return an empty list when no packages are affected" $ do
         D.getOtherVersions "foo" [] `shouldBe` []
+      it "should return an empty list when no packages match the given name" $ do
+        D.getOtherVersions "foo" [ UP.Package "devel" "bar" (UP.NOTVULNERABLE "1.0")
+                                 , UP.Package "bionic" "baz" (UP.NOTVULNERABLE "2.0") ]
+        `shouldBe` 
+        []
