@@ -44,4 +44,21 @@ getUnstableVersion p aps = ( first ((== "devel") . UP.release) aps )
 
 getOtherVersions :: String -> [UP.Package] -> [String]
 getOtherVersions _ [] = []
-getOtherVersions _ aps = []
+getOtherVersions _ aps = fmap getVersion filtered
+
+  where
+    filtered = filter isNotInUpstream $ filter isNotInDevel $ filter isNotVulnerable aps
+
+    isNotVulnerable :: UP.Package -> Bool
+    isNotVulnerable UP.Package{UP.status=UP.VULNERABLE _} = False
+    isNotVulnerable UP.Package{UP.status=UP.NOTVULNERABLE _} = True
+
+    isNotInDevel :: UP.Package -> Bool
+    isNotInDevel = (/= "devel") . UP.release
+
+    isNotInUpstream :: UP.Package -> Bool
+    isNotInUpstream = (/= "upstream") . UP.release
+
+    getVersion :: UP.Package -> String
+    getVersion UP.Package{UP.status=UP.VULNERABLE r} = r
+    getVersion UP.Package{UP.status=UP.NOTVULNERABLE r} = r
