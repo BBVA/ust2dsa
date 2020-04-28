@@ -156,3 +156,13 @@ spec = do
         D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "trionic" "foo" (UP.NOTVULNERABLE "1.0")]
         `shouldBe`
         ' '
+      it "should return an F when there is a fix available (multi-entry list)" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" [ UP.Package "bionic" "foo" (UP.VULNERABLE "1.0")
+                                               , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.1") ]
+        `shouldBe`
+        'F'
+      it "should return an <space> when there is no fix available (multi-entry list)" $ do
+        D.getFlagIsFixAvailable "bionic" "foo" [ UP.Package "bionic" "foo" (UP.VULNERABLE "1.0")
+                                               , UP.Package "devel" "foo" (UP.NOTVULNERABLE "1.1") ]
+        `shouldBe`
+        ' '
