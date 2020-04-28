@@ -3,6 +3,7 @@ module Data.DebianSecurityAnalyzer.CVE where
 import Control.Applicative
 import Data.Foldable
 import Data.Maybe
+import Data.Bool
 import Data.Maybe.HT
 import Data.Monoid
 import qualified Data.UbuntuSecurityTracker.CVE as U
@@ -69,4 +70,4 @@ getFlagUrgency :: Maybe U.Priority -> Char
 getFlagUrgency = maybe ' ' (head . show)
 
 getFlagIsRemote :: Maybe Bool -> Char
-getFlagIsRemote = undefined
+getFlagIsRemote = maybe '?' (bool ' ' 'R')
