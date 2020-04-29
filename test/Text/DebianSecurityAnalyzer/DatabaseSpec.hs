@@ -49,6 +49,16 @@ spec = do
                         , affected = aps
                         }
           in splitOn "," (renderVulnerability cve) `shouldBe` [name cve, "", description cve]
+      it "should replace newlines from description" $
+        do renderVulnerability
+             CVE
+               { name = "foo"
+               , description = "bar\nbaz"
+               , priority = Nothing
+               , isRemote = Nothing
+               , affected = []
+               }
+           `shouldBe` "foo,,bar baz"
   describe "PACKAGE SECTION" $ do
     describe "renderPackage: CVE to debsecan's vulnerability format" $ do
       it "should ignore unaffected packages" $
