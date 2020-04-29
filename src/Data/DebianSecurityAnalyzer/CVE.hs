@@ -3,6 +3,7 @@ module Data.DebianSecurityAnalyzer.CVE where
 import Control.Applicative
 import Data.Bool
 import Data.Foldable
+import Data.List
 import Data.Maybe
 import Data.Maybe.HT
 import Data.Monoid
@@ -53,7 +54,7 @@ getUnstableVersion p aps =
 getOtherVersions :: String -> [UP.Package] -> [String]
 getOtherVersions p aps =
   let stablePackages = filter isStableAndVulnerable aps
-   in version <$> stablePackages
+   in nub $ version <$> stablePackages
   where
     version :: UP.Package -> String
     version = UP.getVersion . UP.status

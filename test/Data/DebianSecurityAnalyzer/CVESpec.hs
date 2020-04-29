@@ -105,6 +105,12 @@ spec = do
                                  , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "6.0") ]
         `shouldBe`
         ["5.0"]
+      it "should not return duplicates" $ do
+        D.getOtherVersions "foo" [ UP.Package "bar" "foo" (UP.NOTVULNERABLE "1.0")
+                                 , UP.Package "baz" "foo" (UP.NOTVULNERABLE "1.0")
+                                 , UP.Package "qux" "foo" (UP.NOTVULNERABLE "2.0") ]
+        `shouldBe`
+        ["1.0", "2.0"]
     describe "getFlagUrgency extracts the Urgency flag" $ do
       it "should return an H for High Priority" $ do
         D.getFlagUrgency (Just U.H)
