@@ -18,6 +18,6 @@ renderPackage r p CVE { affected = aps
     Just $ intercalate "," [name, flags, unstable_version, other_versions]
   where
     name = p
-    flags = [ 'S', getFlagUrgency pri, getFlagIsRemote rmt , ' ' ]
+    flags = [ 'S', getFlagUrgency pri, getFlagIsRemote rmt, getFlagIsFixAvailable r p aps ]
     unstable_version = fromMaybe "" $ getUnstableVersion p aps
     other_versions = unwords $ getOtherVersions p aps
