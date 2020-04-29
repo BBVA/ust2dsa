@@ -43,7 +43,7 @@ spec = do
       it "should respect debsecan's format (populated fields)" $
         property $ \year id d p r aps ->
           let cve = CVE { name = "CVE-" ++ show (year :: Int) ++ "-" ++ show (id :: Int)
-                        , description = filter (/= ',') d
+                        , description = filter (`notElem` ",\n") d
                         , priority = p
                         , isRemote = r
                         , affected = aps

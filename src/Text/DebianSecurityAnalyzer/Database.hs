@@ -2,11 +2,17 @@ module Text.DebianSecurityAnalyzer.Database where
 
 import Data.DebianSecurityAnalyzer.CVE
 import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
+import Data.Bool
 import Data.List
 import Data.Maybe
 
 renderVulnerability :: CVE -> String
-renderVulnerability CVE { name = n , description = d } = n ++ ",," ++ d
+renderVulnerability CVE { name = n , description = d } =
+    let saneDescription = fmap replaceNewLines d
+    in n ++ ",," ++ saneDescription
+  where
+    replaceNewLines :: Char -> Char
+    replaceNewLines c = bool ' ' c ('\n' /= c)
 
 renderPackage :: String       -- Release
               -> Int          -- Vulnerability Index (section offset)
