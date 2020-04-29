@@ -14,7 +14,15 @@ spec :: Spec
 spec = do
   describe "VULNERABILITIES SECTION" $ do
     describe "renderVulnerability: CVE to debsecan's vulnerability format" $ do
-      it "should respect debsecan's format" $ do
+      it "should respect debsecan's format (empty fields)" $ do
+        renderVulnerability CVE { name=""
+                                , description=""
+                                , priority=Nothing
+                                , isRemote=Nothing
+                                , affected=[] }
+        `shouldBe`
+        ",,"
+      it "should respect debsecan's format (populated fields)" $ do
         renderVulnerability CVE { name="foo"
                                 , description="bar"
                                 , priority=Nothing
