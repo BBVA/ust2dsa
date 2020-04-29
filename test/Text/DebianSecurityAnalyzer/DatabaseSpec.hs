@@ -5,6 +5,7 @@ import qualified Data.UbuntuSecurityTracker.CVE as U
 import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
 import Text.DebianSecurityAnalyzer.Database
 
+import Data.List.Split
 import Test.Hspec
 import Test.QuickCheck
 import Generic.Random
@@ -38,14 +39,11 @@ spec = do
                }
            `shouldBe` ",,"
       it "should respect debsecan's format (populated fields)" $
-        property $ \n d p r aps ->
-          renderVulnerability
-            CVE
-              { name = n
-              , description = d
-              , priority = p
-              , isRemote = r
-              , affected = aps
-              }
-          `shouldBe`
-          n ++ ",," ++ d
+        property $ \year id d p r aps ->
+          let cve = CVE { name = "CVE-" ++ show (year :: Int) ++ "-" ++ show (id :: Int)
+                        , description = filter (==',') d
+                        , priority = p
+                        , isRemote = r
+                        , affected = aps
+                        }
+          in splitOn "," (renderVulnerability cve) `shouldBe` [name cve, "", description cve]

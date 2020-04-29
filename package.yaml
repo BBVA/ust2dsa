@@ -28,6 +28,7 @@ dependencies:
 - text
 - optparse-generic
 - utility-ht
+- split
 
 library:
   source-dirs: src
