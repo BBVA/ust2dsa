@@ -49,6 +49,7 @@ spec = do
                         , affected = aps
                         }
           in splitOn "," (renderVulnerability cve) `shouldBe` [name cve, "", description cve]
+  describe "PACKAGE SECTION" $ do
     describe "renderPackage: CVE to debsecan's vulnerability format" $ do
       it "should ignore unaffected packages" $
         let cve = CVE { name = "foo"
@@ -57,7 +58,22 @@ spec = do
                       , isRemote = Just False
                       , affected = []
                       }
-        in renderPackage "qux" "quux" cve `shouldBe` Nothing
+        in renderPackage "qux" 0 "quux" cve `shouldBe` Nothing
+      it "should add the given offset" $
+        property $ \o ->
+          let cve = CVE { name = "foo"
+                        , description = "bar"
+                        , priority = Nothing
+                        , isRemote = Just False
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release="baz"
+                                                  , UP.status=UP.VULNERABLE "1.0"
+                                                  } ]
+                        }
+          in renderPackage "qux" o "package" cve
+             `shouldBe`
+             (Just $ "package," ++ (show o) ++ ",S   ,,")
+
       it "should render affected package (vulnerable)" $
         property $ \n d r ->
           let cve = CVE { name = n
@@ -69,9 +85,9 @@ spec = do
                                                   , UP.status=UP.VULNERABLE "1.0"
                                                   } ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just "package,S   ,,"
+             Just "package,0,S   ,,"
       it "should render affected package (not vulnerable in devel)" $
         property $ \n d ->
           let cve = CVE { name = n
@@ -83,9 +99,9 @@ spec = do
                                                   , UP.status=UP.NOTVULNERABLE "1.0"
                                                   } ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just "package,S   ,1.0,"
+             Just "package,0,S   ,1.0,"
       it "should render affected package (not vulnerable in upstream)" $
         property $ \n d ->
           let cve = CVE { name = n
@@ -97,9 +113,9 @@ spec = do
                                                   , UP.status=UP.NOTVULNERABLE "1.0"
                                                   } ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just "package,S   ,1.0,"
+             Just "package,0,S   ,1.0,"
       it "should render affected package (not vulnerable in other suite)" $
         property $ \n d ->
           let cve = CVE { name = n
@@ -115,9 +131,9 @@ spec = do
                                                   , UP.status=UP.NOTVULNERABLE "2.0"
                                                   } ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just "package,S   ,,1.0 2.0"
+             Just "package,0,S   ,,1.0 2.0"
       it "should render affected package (not vulnerable several suites and devel)" $
         property $ \n d ->
           let cve = CVE { name = n
@@ -133,9 +149,9 @@ spec = do
                                                   , UP.status=UP.NOTVULNERABLE "2.0"
                                                   } ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just "package,S   ,1.0,2.0"
+             Just "package,0,S   ,1.0,2.0"
       it "should render affected package's priority" $
         property $ \n d p ->
           let cve = CVE { name = n
@@ -148,9 +164,9 @@ spec = do
                                                   }
                                      ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just ("package,S" ++ (show p) ++ "  ,,")
+             Just ("package,0,S" ++ (show p) ++ "  ,,")
       it "should render affected package's remote flag" $
         property $ \r ->
           let cve = CVE { name = "foo"
@@ -163,9 +179,9 @@ spec = do
                                                   }
                                      ]
                         }
-          in renderPackage "qux" "package" cve
+          in renderPackage "qux" 0 "package" cve
              `shouldBe`
-             Just ("package,S " ++ (maybe "?" (bool " " "R") r) ++ " ,,")
+             Just ("package,0,S " ++ (maybe "?" (bool " " "R") r) ++ " ,,")
       it "should render affected package's fix available flag" $
         property $ \r ->
           let cve = CVE { name = "foo"
@@ -178,6 +194,6 @@ spec = do
                                                   }
                                      ]
                         }
-          in renderPackage r "package" cve
+          in renderPackage r 0 "package" cve
              `shouldSatisfy`
-             \res -> maybe False (isPrefixOf "package,S  F") res
+             \res -> maybe False (isPrefixOf "package,0,S  F") res
