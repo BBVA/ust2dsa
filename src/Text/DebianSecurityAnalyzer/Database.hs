@@ -33,6 +33,6 @@ renderDebsecanDB r cs = "VERSION 1\n" ++ sections
     affected = intercalate "\n" renderedAffected
     renderedAffected = do
       (i, c@CVE { affected = aps }) <- zip [0..] cs
-      UP.Package { UP.name = p }  <- aps
+      p <- nub $ UP.name <$> aps
       maybe [] return (renderPackage r i p c)
     sources = ""

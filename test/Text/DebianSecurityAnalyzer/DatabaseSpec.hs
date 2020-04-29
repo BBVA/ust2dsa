@@ -201,7 +201,7 @@ spec = do
     describe "renderDebsecanDB: renders according to Debsecan's db format" $ do
       it "should respect format (when empty)" $ do
         renderDebsecanDB "foo" [] `shouldBe` "VERSION 1\n\n\n\n\n"
-      it "should respect format" $
+      it "should respect format (single affected package)" $
         let cve = CVE { name = "CVE-1985-0609"
                       , description = "Foo bar!"
                       , priority = Nothing
@@ -214,3 +214,50 @@ spec = do
         in renderDebsecanDB "foo" [cve]
            `shouldBe`
            "VERSION 1\nCVE-1985-0609,,Foo bar!\n\nbaz,0,S   ,,\n\n"
+      it "should respect format (multiple affected package)" $
+        let cve = CVE { name = "CVE-1985-0609"
+                      , description = "Foo bar!"
+                      , priority = Nothing
+                      , isRemote = Just False
+                      , affected = [ UP.Package { UP.name = "baz"
+                                                , UP.release = "devel"
+                                                , UP.status = UP.NOTVULNERABLE "1.0"
+                                                }
+                                   , UP.Package { UP.name = "qux"
+                                                , UP.release = "bionic"
+                                                , UP.status = UP.NOTVULNERABLE "2.0"
+                                                }
+                                   , UP.Package { UP.name = "qux"
+                                                , UP.release = "upstream"
+                                                , UP.status = UP.NOTVULNERABLE "1.5"
+                                                }]
+                      }
+        in renderDebsecanDB "foo" [cve]
+           `shouldBe`
+           "VERSION 1\nCVE-1985-0609,,Foo bar!\n\nbaz,0,S   ,1.0,\nqux,0,S   ,1.5,2.0\n\n"
+      it "should respect format (multiple vulnerabilities)" $
+        let cve1 = CVE { name = "CVE-1985-0609"
+                       , description = "Foo bar!"
+                       , priority = Nothing
+                       , isRemote = Just False
+                       , affected = [ UP.Package { UP.name = "baz"
+                                                 , UP.release = "devel"
+                                                 , UP.status = UP.NOTVULNERABLE "1.0"
+                                                 } ]
+                       }
+            cve2 = CVE { name = "CVE-1974-0719"
+                       , description = "Qux Quux!"
+                       , priority = Nothing
+                       , isRemote = Just False
+                       , affected = [ UP.Package { UP.name = "qux"
+                                                 , UP.release = "bionic"
+                                                 , UP.status = UP.NOTVULNERABLE "2.0"
+                                                 }
+                                    , UP.Package { UP.name = "qux"
+                                                 , UP.release = "upstream"
+                                                 , UP.status = UP.NOTVULNERABLE "1.5"
+                                                 } ]
+                       }
+        in renderDebsecanDB "foo" [cve1, cve2]
+           `shouldBe`
+           "VERSION 1\nCVE-1985-0609,,Foo bar!\nCVE-1974-0719,,Qux Quux!\n\nbaz,0,S   ,1.0,\nqux,1,S   ,1.5,2.0\n\n"
