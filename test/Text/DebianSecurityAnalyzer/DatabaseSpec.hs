@@ -6,6 +6,7 @@ import qualified Data.UbuntuSecurityTracker.CVE as U
 import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
 
 import Test.Hspec
+import Test.QuickCheck
 
 main :: IO ()
 main = hspec spec
@@ -22,11 +23,9 @@ spec = do
                                 , affected=[] }
         `shouldBe`
         ",,"
-      it "should respect debsecan's format (populated fields)" $ do
-        renderVulnerability CVE { name="foo"
-                                , description="bar"
-                                , priority=Nothing
-                                , isRemote=Nothing
-                                , affected=[] }
-        `shouldBe`
-        "foo,,bar"
+      it "should respect debsecan's format (populated fields)" $ property $
+        \n d  -> renderVulnerability CVE { name=n
+                                         , description=d
+                                         , priority=Nothing
+                                         , isRemote=Nothing
+                                         , affected=[] } `shouldBe` n ++ ",," ++ d
