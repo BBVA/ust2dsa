@@ -6,6 +6,7 @@ import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
 import Text.DebianSecurityAnalyzer.Database
 
 import Data.List.Split
+import Data.Bool
 import Test.Hspec
 import Test.QuickCheck
 import Generic.Random
@@ -149,3 +150,18 @@ spec = do
           in renderPackage "qux" "package" cve
              `shouldBe`
              Just ("package,S" ++ (show p) ++ "  ,,")
+      it "should render affected package's remote flag" $
+        property $ \r ->
+          let cve = CVE { name = "foo"
+                        , description = "bar"
+                        , priority = Nothing
+                        , isRemote = r
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release="devel"
+                                                  , UP.status=UP.VULNERABLE "1.0"
+                                                  }
+                                     ]
+                        }
+          in renderPackage "qux" "package" cve
+             `shouldBe`
+             Just ("package,S " ++ (maybe "?" (bool " " "R") r) ++ " ,,")
