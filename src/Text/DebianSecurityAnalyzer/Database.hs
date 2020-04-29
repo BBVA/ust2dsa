@@ -9,4 +9,5 @@ renderPackage :: String       -- Release
               -> String       -- Package Name
               -> CVE          -- Vulnerability
               -> Maybe String -- Formatted Output
-renderPackage _ _ _ = Nothing
+renderPackage _ _ CVE { affected = [] } = Nothing
+renderPackage _ _ _ = Just "package,S   ,,"
