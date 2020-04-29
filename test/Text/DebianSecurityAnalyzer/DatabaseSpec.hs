@@ -56,16 +56,31 @@ spec = do
                       , affected = []
                       }
         in renderPackage "qux" "quux" cve `shouldBe` Nothing
-      it "should render affected package" $
-        let cve = CVE { name = "foo"
-                      , description = "bar"
-                      , priority = Nothing
-                      , isRemote = Nothing
-                      , affected = [ UP.Package { UP.name="package"
-                                                , UP.release="baz"
-                                                , UP.status=UP.VULNERABLE "1.0"
-                                                } ]
-                      }
-        in renderPackage "qux" "package" cve
-           `shouldBe`
-           Just "package,S   ,,"
+      it "should render affected package (vulnerable)" $
+        property $ \n d r ->
+          let cve = CVE { name = n
+                        , description = d 
+                        , priority = Nothing
+                        , isRemote = Nothing
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release=r
+                                                  , UP.status=UP.VULNERABLE "1.0"
+                                                  } ]
+                        }
+          in renderPackage "qux" "package" cve
+             `shouldBe`
+             Just "package,S   ,,"
+      it "should render affected package (not vulnerable in devel)" $
+        property $ \n d ->
+          let cve = CVE { name = n
+                        , description = d 
+                        , priority = Nothing
+                        , isRemote = Nothing
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release="devel"
+                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  } ]
+                        }
+          in renderPackage "qux" "package" cve
+             `shouldBe`
+             Just "package,S   ,1.0,"
