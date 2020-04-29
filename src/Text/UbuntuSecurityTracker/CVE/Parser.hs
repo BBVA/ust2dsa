@@ -1,6 +1,7 @@
 module Text.UbuntuSecurityTracker.CVE.Parser
   ( cveParser
-  , parseFile
+  , parseWithErrors
   ) where
 
-import Text.UbuntuSecurityTracker.CVE.ParserImpl (cveParser, parseFile)
+import Text.UbuntuSecurityTracker.CVE.ParserImpl (cveParser, parseWithErrors)
+

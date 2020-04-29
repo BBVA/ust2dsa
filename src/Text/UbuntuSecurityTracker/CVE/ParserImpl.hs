@@ -1,6 +1,6 @@
 module Text.UbuntuSecurityTracker.CVE.ParserImpl
   ( cveParser
-  , parseFile
+  , parseWithErrors
   , linecomment
   , keyvalue
   , release
@@ -11,6 +11,7 @@ module Text.UbuntuSecurityTracker.CVE.ParserImpl
   ) where
 
 import Data.Functor
+import Data.Bifunctor
 import Data.List
 import Data.UbuntuCVE
 import Data.UbuntuSecurityTracker.CVE.Token
@@ -110,13 +111,5 @@ cveParser = (validline `sepEndBy` many newline) <* eof
   where
     validline = try keyvalue <|> try releasepackagestatus <|> try linecomment
 
-parseFile :: Parser a -> String -> IO ()
-parseFile p fileName = parseFromFile p fileName >>= either report ok
-  where
-    report err = do
-      putStrLn $ show err
-      exitFailure
-      return ()
-    ok _ = do
-      putStrLn $ show fileName ++ ": OK"
-      return ()
+parseWithErrors :: String -> Either String [Token]
+parseWithErrors s = bimap show id $ parse cveParser "" s

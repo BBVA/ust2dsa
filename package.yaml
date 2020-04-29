@@ -29,6 +29,7 @@ dependencies:
 - optparse-generic
 - utility-ht
 - split
+- strict
 
 library:
   source-dirs: src
