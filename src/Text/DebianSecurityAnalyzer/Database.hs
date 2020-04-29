@@ -1,6 +1,8 @@
 module Text.DebianSecurityAnalyzer.Database where
 
 import Data.DebianSecurityAnalyzer.CVE
+import Data.List
+import Data.Maybe
 
 renderVulnerability :: CVE -> String
 renderVulnerability CVE { name = n , description = d } = n ++ ",," ++ d
@@ -11,6 +13,9 @@ renderPackage :: String       -- Release
               -> Maybe String -- Formatted Output
 renderPackage _ _ CVE { affected = [] } = Nothing
 renderPackage r p CVE { affected=aps } =
-  case getUnstableVersion p aps of
-    Just v -> Just (p ++ ",S   ," ++ v ++ ",")
-    Nothing -> Just (p ++ ",S   ,,")
+    Just $ intercalate "," [name, flags, unstable_version, other_versions]
+  where
+    name = p
+    flags = "S   "
+    unstable_version = fromMaybe "" $ getUnstableVersion p aps
+    other_versions = unwords $ getOtherVersions p aps
