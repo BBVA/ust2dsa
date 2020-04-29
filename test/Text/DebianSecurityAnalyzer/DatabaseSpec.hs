@@ -84,6 +84,20 @@ spec = do
           in renderPackage "qux" "package" cve
              `shouldBe`
              Just "package,S   ,1.0,"
+      it "should render affected package (not vulnerable in upstream)" $
+        property $ \n d ->
+          let cve = CVE { name = n
+                        , description = d 
+                        , priority = Nothing
+                        , isRemote = Nothing
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release="upstream"
+                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  } ]
+                        }
+          in renderPackage "qux" "package" cve
+             `shouldBe`
+             Just "package,S   ,1.0,"
       it "should render affected package (not vulnerable in other suite)" $
         property $ \n d ->
           let cve = CVE { name = n
@@ -102,3 +116,36 @@ spec = do
           in renderPackage "qux" "package" cve
              `shouldBe`
              Just "package,S   ,,1.0 2.0"
+      it "should render affected package (not vulnerable several suites and devel)" $
+        property $ \n d ->
+          let cve = CVE { name = n
+                        , description = d 
+                        , priority = Nothing
+                        , isRemote = Nothing
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release="devel"
+                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  }
+                                     , UP.Package { UP.name="package"
+                                                  , UP.release="feasty"
+                                                  , UP.status=UP.NOTVULNERABLE "2.0"
+                                                  } ]
+                        }
+          in renderPackage "qux" "package" cve
+             `shouldBe`
+             Just "package,S   ,1.0,2.0"
+      it "should render affected package's priority" $
+        property $ \n d p ->
+          let cve = CVE { name = n
+                        , description = d 
+                        , priority = Just p
+                        , isRemote = Nothing 
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release="devel"
+                                                  , UP.status=UP.VULNERABLE "1.0"
+                                                  }
+                                     ]
+                        }
+          in renderPackage "qux" "package" cve
+             `shouldBe`
+             Just ("package,S" ++ (show p) ++ "  ,,")
