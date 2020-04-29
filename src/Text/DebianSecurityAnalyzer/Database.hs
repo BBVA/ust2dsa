@@ -22,3 +22,6 @@ renderPackage r o p CVE { affected = aps
     flags = [ 'S', getFlagUrgency pri, getFlagIsRemote rmt, getFlagIsFixAvailable r p aps ]
     unstable_version = fromMaybe "" $ getUnstableVersion p aps
     other_versions = unwords $ getOtherVersions p aps
+
+renderDebsecanDb :: [CVE] -> String
+renderDebsecanDb _ = undefined
