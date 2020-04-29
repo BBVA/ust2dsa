@@ -48,7 +48,7 @@ spec = do
                         }
           in splitOn "," (renderVulnerability cve) `shouldBe` [name cve, "", description cve]
     describe "renderPackage: CVE to debsecan's vulnerability format" $ do
-      it "should ignore unaffected packages" $ 
+      it "should ignore unaffected packages" $
         let cve = CVE { name = "foo"
                       , description = "bar"
                       , priority = Nothing

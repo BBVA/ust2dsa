@@ -6,4 +6,4 @@ renderVulnerability :: CVE -> String
 renderVulnerability CVE { name = n , description = d } = n ++ ",," ++ d
 
 renderPackage :: String -> CVE -> Maybe String
-renderPackage _ _ = undefined
+renderPackage _ _ = Nothing
