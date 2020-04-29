@@ -10,4 +10,7 @@ renderPackage :: String       -- Release
               -> CVE          -- Vulnerability
               -> Maybe String -- Formatted Output
 renderPackage _ _ CVE { affected = [] } = Nothing
-renderPackage _ _ _ = Just "package,S   ,,"
+renderPackage r p CVE { affected=aps } =
+  case getUnstableVersion p aps of
+    Just v -> Just (p ++ ",S   ," ++ v ++ ",")
+    Nothing -> Just (p ++ ",S   ,,")
