@@ -55,4 +55,17 @@ spec = do
                       , isRemote = Nothing
                       , affected = []
                       }
-        in (renderPackage "qux" cve) `shouldBe` Nothing
+        in renderPackage "qux" "quux" cve `shouldBe` Nothing
+      it "should render affected package" $
+        let cve = CVE { name = "foo"
+                      , description = "bar"
+                      , priority = Nothing
+                      , isRemote = Nothing
+                      , affected = [ UP.Package { UP.name="package"
+                                                , UP.release="baz"
+                                                , UP.status=UP.VULNERABLE "1.0"
+                                                } ]
+                      }
+        in renderPackage "qux" "package" cve
+           `shouldBe`
+           Just "package,S   ,,"
