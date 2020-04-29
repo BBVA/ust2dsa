@@ -28,7 +28,6 @@ renderDebsecanDB :: String -> [CVE] -> String
 renderDebsecanDB r cs = "VERSION 1\n" ++ sections
   where
     sections = intercalate "\n\n" [ vulnerabilities, affected, sources ]
-
     vulnerabilities = intercalate "\n" $ fmap renderVulnerability cs
     affected = intercalate "\n" renderedAffected
     renderedAffected = do
