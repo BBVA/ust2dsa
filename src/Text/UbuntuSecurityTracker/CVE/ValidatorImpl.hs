@@ -23,6 +23,8 @@ honorToken c (Metadata k v)
     if | v == "high" -> Right c {priority = Just H}
        | v == "medium" -> Right c {priority = Just M}
        | v == "low" -> Right c {priority = Just L}
+       | v == "negligible" -> Right c {priority = Just L}
+       | v == "untriaged" -> Right c {priority = Nothing}
        | otherwise -> Left $ "unknown priority value '" ++ v ++ "'"
   | otherwise = Right c
 honorToken c (RPS r p s Nothing) = Right c

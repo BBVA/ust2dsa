@@ -30,6 +30,12 @@ spec = do
     it "should fill the priority field with the `Priority` Metadata (high)" $
       do honorToken emptyCVE (Metadata "Priority" "high")
          `shouldBe` Right emptyCVE {priority = Just H}
+    it "should fill the priority field with the `Priority` Metadata (untriaged)" $
+      do honorToken emptyCVE (Metadata "Priority" "untriaged")
+         `shouldBe` Right emptyCVE {priority = Nothing}
+    it "should fill the priority field with the `Priority` Metadata (negligible)" $
+      do honorToken emptyCVE (Metadata "Priority" "negligible")
+         `shouldBe` Right emptyCVE {priority = Just L}
     it "should report when the priority field contains something unknown" $
       do honorToken emptyCVE (Metadata "Priority" "very-low-maybe-dontknow")
          `shouldSatisfy`
