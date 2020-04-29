@@ -41,7 +41,7 @@ getUnstableVersion p aps =
    in firstVersion develPackages <|> firstVersion upstreamPackages
   where
     firstVersion :: [UP.Package] -> Maybe String
-    firstVersion xs = (UP.getVersion . UP.status) <$> listToMaybe xs
+    firstVersion xs = UP.getVersion . UP.status <$> listToMaybe xs
     isVulnerableRelease :: String -> (UP.Package -> Bool)
     isVulnerableRelease r =
       combineFilters
@@ -74,9 +74,9 @@ getFlagIsRemote = maybe '?' (bool ' ' 'R')
 
 getFlagIsFixAvailable :: String -> String -> [UP.Package] -> Char
 getFlagIsFixAvailable r p aps =
-  if null $ filter isFixed aps
-    then ' '
-    else 'F'
+  if any isFixed aps
+    then 'F'
+    else ' '
   where
     isFixed =
       combineFilters

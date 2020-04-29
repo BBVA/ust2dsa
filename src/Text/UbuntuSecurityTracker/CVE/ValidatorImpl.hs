@@ -30,4 +30,4 @@ honorToken c@CVE {affected = aps} (RPS r p s cv) =
   Right $
   case P.mapStatus s cv of
     Nothing -> c
-    Just st -> c {affected = (P.Package r p st : aps)}
+    Just st -> c {affected = P.Package r p st : aps}

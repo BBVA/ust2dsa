@@ -5,7 +5,7 @@ module Main where
 
 import Prelude hiding (readFile)
 import Options.Generic
-import System.IO (stdout, stderr, hPutStrLn, hPutStr)
+import System.IO (stdout, stderr, hPutStrLn, hPutStr, putStr)
 
 import Control.Monad
 import Data.Bifunctor
@@ -33,8 +33,8 @@ main = do
   let (errors, cves) = partitionEithers parsed
 
   forM_ errors $ hPutStrLn stderr
-  hPutStr stdout $ renderDebsecanDB release cves
+  putStr $ renderDebsecanDB release cves
 
   where
     parseFile :: FilePath -> IO (Either String CVE)
-    parseFile fn = readFile fn >>= return . parseAndValidate fn
+    parseFile fn = parseAndValidate fn <$> readFile fn

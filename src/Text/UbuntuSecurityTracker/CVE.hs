@@ -4,14 +4,13 @@ import Data.Bifunctor
 import Text.Parsec
 
 import Control.Monad ((>=>))
-import Data.DebianSecurityAnalyzer.CVE (CVE (..))
-import Data.DebianSecurityAnalyzer.CVE (mapCVE)
+import Data.DebianSecurityAnalyzer.CVE (CVE (..), mapCVE)
 import Text.UbuntuSecurityTracker.CVE.Parser (parseWithErrors)
 import Data.UbuntuSecurityTracker.CVE.Token (Token)
 import Text.UbuntuSecurityTracker.CVE.ValidatorImpl (fillCVE)
 
 parseAndValidate :: String -> String -> Either String CVE
-parseAndValidate filename content = bimap addFilenameToError id $ parseAndValidate' content
+parseAndValidate filename content = first addFilenameToError $ parseAndValidate' content
   where
     addFilenameToError :: String -> String
     addFilenameToError e = filename ++ ": " ++ e

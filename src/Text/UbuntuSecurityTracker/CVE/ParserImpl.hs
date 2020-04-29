@@ -13,7 +13,6 @@ module Text.UbuntuSecurityTracker.CVE.ParserImpl
 import Data.Functor
 import Data.Bifunctor
 import Data.List
-import Data.UbuntuCVE
 import Data.UbuntuSecurityTracker.CVE.Token
 import System.Exit
 import Text.Parsec
@@ -112,4 +111,4 @@ cveParser = (validline `sepEndBy` many newline) <* eof
     validline = try keyvalue <|> try releasepackagestatus <|> try linecomment
 
 parseWithErrors :: String -> Either String [Token]
-parseWithErrors s = bimap show id $ parse cveParser "" s
+parseWithErrors s = first show $ parse cveParser "" s

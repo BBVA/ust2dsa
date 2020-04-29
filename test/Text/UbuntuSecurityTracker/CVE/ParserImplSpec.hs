@@ -1,6 +1,5 @@
 module Text.UbuntuSecurityTracker.CVE.ParserImplSpec where
 
-import Data.UbuntuCVE
 import Data.UbuntuSecurityTracker.CVE.Token
 import Text.UbuntuSecurityTracker.CVE.ParserImpl
 
