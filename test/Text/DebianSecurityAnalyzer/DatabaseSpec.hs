@@ -6,6 +6,7 @@ import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
 import Text.DebianSecurityAnalyzer.Database
 
 import Data.List.Split
+import Data.List
 import Data.Bool
 import Test.Hspec
 import Test.QuickCheck
@@ -165,3 +166,18 @@ spec = do
           in renderPackage "qux" "package" cve
              `shouldBe`
              Just ("package,S " ++ (maybe "?" (bool " " "R") r) ++ " ,,")
+      it "should render affected package's fix available flag" $
+        property $ \r ->
+          let cve = CVE { name = "foo"
+                        , description = "bar"
+                        , priority = Nothing
+                        , isRemote = Just False
+                        , affected = [ UP.Package { UP.name="package"
+                                                  , UP.release=r
+                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  }
+                                     ]
+                        }
+          in renderPackage r "package" cve
+             `shouldSatisfy`
+             \res -> maybe False (isPrefixOf "package,S  F") res
