@@ -198,6 +198,6 @@ spec = do
              `shouldSatisfy`
              \res -> maybe False (isPrefixOf "package,0,S  F") res
   describe "DATABASE FORMAT" $ do
-    describe "renderDebsecanDb: renders according to Debsecan's db format" $ do
+    describe "renderDebsecanDB: renders according to Debsecan's db format" $ do
       it "should respect format (when empty)" $ do
-        renderDebsecanDb [] `shouldBe` "VERSION1\n\n\n"
+        renderDebsecanDB [] `shouldBe` "VERSION 1\n\n\n"

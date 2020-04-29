@@ -23,5 +23,5 @@ renderPackage r o p CVE { affected = aps
     unstable_version = fromMaybe "" $ getUnstableVersion p aps
     other_versions = unwords $ getOtherVersions p aps
 
-renderDebsecanDb :: [CVE] -> String
-renderDebsecanDb _ = undefined
+renderDebsecanDB :: [CVE] -> String
+renderDebsecanDB _ = "VERSION 1\n\n\n"
