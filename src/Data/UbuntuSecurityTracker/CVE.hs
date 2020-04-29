@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Data.UbuntuSecurityTracker.CVE
   ( CVE(..)
   , Priority(..)
@@ -5,12 +7,13 @@ module Data.UbuntuSecurityTracker.CVE
   ) where
 
 import qualified Data.UbuntuSecurityTracker.CVE.Package as P
+import GHC.Generics
 
 data Priority
   = L
   | M
   | H
-  deriving (Show, Eq, Ord)
+  deriving (Generic, Show, Eq, Ord)
 
 data CVE =
   CVE

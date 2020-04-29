@@ -1,4 +1,5 @@
-{-# LANGUAGE OverloadedStrings#-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Data.UbuntuSecurityTracker.CVE.Package
   ( Status(..)
@@ -12,11 +13,12 @@ import qualified Data.UbuntuSecurityTracker.CVE.Token as T (Status(..))
 import Data.Either (isRight)
 import Data.Versions (versioning)
 import Data.Text (pack, replace)
+import GHC.Generics
 
 data Status
   = VULNERABLE String
   | NOTVULNERABLE String
-  deriving (Show, Eq, Ord)
+  deriving (Generic, Show, Eq, Ord)
 
 isVulnerable :: Status -> Bool
 isVulnerable (VULNERABLE _) = True
@@ -32,7 +34,7 @@ data Package =
     , name :: String
     , status :: Status
     }
-  deriving (Show, Eq, Ord)
+  deriving (Generic, Show, Eq, Ord)
 
 
 isValidVersion :: String -> Bool
