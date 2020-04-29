@@ -200,4 +200,17 @@ spec = do
   describe "DATABASE FORMAT" $ do
     describe "renderDebsecanDB: renders according to Debsecan's db format" $ do
       it "should respect format (when empty)" $ do
-        renderDebsecanDB [] `shouldBe` "VERSION 1\n\n\n"
+        renderDebsecanDB "foo" [] `shouldBe` "VERSION 1\n\n\n"
+      it "should respect format" $
+        let cve = CVE { name = "CVE-1985-0609"
+                      , description = "Foo bar!"
+                      , priority = Nothing
+                      , isRemote = Just False
+                      , affected = [ UP.Package { UP.name = "baz"
+                                                , UP.release = "devel"
+                                                , UP.status = UP.VULNERABLE "1.0"
+                                                } ]
+                      }
+        in renderDebsecanDB "foo" [cve]
+           `shouldBe`
+           "VERSION 1\nCVE-1985-0609,,Foo bar!\n\nbaz,0,S   ,,\n\n"
