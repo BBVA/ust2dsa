@@ -53,16 +53,16 @@ spec = do
         let cve = CVE { name = "foo"
                       , description = "bar"
                       , priority = Nothing
-                      , isRemote = Nothing
+                      , isRemote = Just False
                       , affected = []
                       }
         in renderPackage "qux" "quux" cve `shouldBe` Nothing
       it "should render affected package (vulnerable)" $
         property $ \n d r ->
           let cve = CVE { name = n
-                        , description = d 
+                        , description = d
                         , priority = Nothing
-                        , isRemote = Nothing
+                        , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release=r
                                                   , UP.status=UP.VULNERABLE "1.0"
@@ -74,9 +74,9 @@ spec = do
       it "should render affected package (not vulnerable in devel)" $
         property $ \n d ->
           let cve = CVE { name = n
-                        , description = d 
+                        , description = d
                         , priority = Nothing
-                        , isRemote = Nothing
+                        , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="devel"
                                                   , UP.status=UP.NOTVULNERABLE "1.0"
@@ -88,9 +88,9 @@ spec = do
       it "should render affected package (not vulnerable in upstream)" $
         property $ \n d ->
           let cve = CVE { name = n
-                        , description = d 
+                        , description = d
                         , priority = Nothing
-                        , isRemote = Nothing
+                        , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="upstream"
                                                   , UP.status=UP.NOTVULNERABLE "1.0"
@@ -102,9 +102,9 @@ spec = do
       it "should render affected package (not vulnerable in other suite)" $
         property $ \n d ->
           let cve = CVE { name = n
-                        , description = d 
+                        , description = d
                         , priority = Nothing
-                        , isRemote = Nothing
+                        , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="bionic"
                                                   , UP.status=UP.NOTVULNERABLE "1.0"
@@ -120,9 +120,9 @@ spec = do
       it "should render affected package (not vulnerable several suites and devel)" $
         property $ \n d ->
           let cve = CVE { name = n
-                        , description = d 
+                        , description = d
                         , priority = Nothing
-                        , isRemote = Nothing
+                        , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="devel"
                                                   , UP.status=UP.NOTVULNERABLE "1.0"
@@ -138,9 +138,9 @@ spec = do
       it "should render affected package's priority" $
         property $ \n d p ->
           let cve = CVE { name = n
-                        , description = d 
+                        , description = d
                         , priority = Just p
-                        , isRemote = Nothing 
+                        , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="devel"
                                                   , UP.status=UP.VULNERABLE "1.0"
