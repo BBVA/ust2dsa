@@ -12,10 +12,11 @@ renderPackage :: String       -- Release
               -> CVE          -- Vulnerability
               -> Maybe String -- Formatted Output
 renderPackage _ _ CVE { affected = [] } = Nothing
-renderPackage r p CVE { affected=aps } =
+renderPackage r p CVE { affected = aps
+                      , priority = pri } =
     Just $ intercalate "," [name, flags, unstable_version, other_versions]
   where
     name = p
-    flags = "S   "
+    flags = intercalate "" ["S", maybe " " show pri, " ", " " ]
     unstable_version = fromMaybe "" $ getUnstableVersion p aps
     other_versions = unwords $ getOtherVersions p aps
