@@ -1,6 +1,7 @@
 # ubuntu-cve-tracker2debsecan
 
 ![License check](https://github.com/nilp0inter/ubuntu-cve-tracker2debsecan/workflows/License%20check/badge.svg)
+![Haskell CI](https://github.com/nilp0inter/ubuntu-cve-tracker2debsecan/workflows/Haskell%20CI/badge.svg)
 
 ## debsecan database format
 
