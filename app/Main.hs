@@ -18,25 +18,24 @@ limitations under the License.
 module Main where
 
 import Prelude hiding (readFile)
-import System.IO (stdout, stderr, hPutStrLn, putStr, IOMode(..), withFile)
+import System.IO (IOMode(..), hPutStrLn, stderr, withFile)
 
-import Control.Monad
-import Data.Bifunctor
-import Data.DebianSecurityAnalyzer.CVE (CVE, mapCVE)
-import Data.Either
-import System.Exit (exitFailure)
+import Codec.Compression.Zlib (compress)
+import Control.Monad (forM_, mapM, when)
+import Data.ByteString.Lazy (hPutStr)
+import Data.Either (partitionEithers)
+import Data.Text.Lazy (pack)
+import Data.Text.Lazy.Encoding (encodeUtf8)
+import System.Console.CmdArgs.Implicit
+import System.Exit (die)
+import System.IO.Strict (readFile)
+
+import Data.DebianSecurityAnalyzer.CVE (CVE)
 import Text.DebianSecurityAnalyzer.Database (renderDebsecanDB)
-import Text.Parsec (parse)
-import Text.Parsec.String (Parser(..), parseFromFile)
 import Text.UbuntuSecurityTracker.CVE (parseAndValidate)
 import Text.UbuntuSecurityTracker.CVE.Parser (cveParser)
 import Text.UbuntuSecurityTracker.CVE.ValidatorImpl (fillCVE)
-import System.IO.Strict (readFile)
-import System.Console.CmdArgs.Implicit
-import Codec.Compression.Zlib (compress)
-import Data.ByteString.Lazy (hPutStr)
-import Data.Text.Lazy (pack)
-import Data.Text.Lazy.Encoding (encodeUtf8)
+
 
 data ArgParser =
   ArgParser
@@ -50,7 +49,7 @@ data ArgParser =
 
 argparser =
   ArgParser
-    { check = def &= help "Only check CVE files for errors"
+    { check = def &= help "Only check CVE cveFiles for errors"
     , manifest = def &= help "Base URI to Ubuntu's release manifest"
     , release = def &= help "Ubuntu release codename"
     , generic = def &= help "Build a GENERIC database"
@@ -62,21 +61,23 @@ main = do
   args <- cmdArgs argparser
   
   let releases = release args
-  let files = cves args
+  let cveFiles = cves args
   let buildGeneric = generic args
 
-  parsed <- mapM parseFile files
-  let (errors, cves) = partitionEithers parsed
-  let render r = renderDebsecanDB r cves
+  when (null cveFiles) $ die "You must specify at least one CVE source file"
+  when (null releases && not buildGeneric) $ die "You must specify at least one release to build or GENERIC"
 
-  forM_ errors $ hPutStrLn stderr
-  forM_ releases $ \x -> writeOutput x (render x)
-  when buildGeneric (writeOutput "GENERIC" (render ""))
+  (errors, cves) <- partitionEithers <$> mapM parseFile cveFiles
+
+  forM_ errors   $ hPutStrLn stderr
+  forM_ releases $ \x -> writeOutput x $ renderDebsecanDB x cves
+  when buildGeneric $ writeOutput "GENERIC" $ renderDebsecanDB "" cves
 
   where
     parseFile :: FilePath -> IO (Either String CVE)
     parseFile fn = parseAndValidate fn <$> readFile fn
 
     writeOutput :: FilePath -> String -> IO ()
-    writeOutput fp s = withFile fp WriteMode (\h -> hPutStr h ((compress . encodeUtf8 . pack) s))
-        
+    writeOutput fp s =
+      let putCompressed h = hPutStr h $ (compress . encodeUtf8 . pack) s
+       in withFile fp WriteMode putCompressed
