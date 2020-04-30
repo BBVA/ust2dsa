@@ -1,5 +1,7 @@
 # ubuntu-cve-tracker2debsecan
 
+![License check](https://github.com/nilp0inter/ubuntu-cve-tracker2debsecan/workflows/License%20check/badge.svg)
+
 ## debsecan database format
 
 Since we haven't been able to find proper documentation for this format,
