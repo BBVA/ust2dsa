@@ -23,6 +23,7 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: License Checker
-      uses: nilp0inter/license_checker@v1.0.6
+    - name: Search Legal Headers
+      uses: nilp0inter/search-legal-headers@v0.0.1
+
 
