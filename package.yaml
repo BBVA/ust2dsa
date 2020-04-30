@@ -30,6 +30,7 @@ dependencies:
 - utility-ht
 - split
 - strict
+- zlib
 
 library:
   source-dirs: src

@@ -18,7 +18,7 @@ limitations under the License.
 module Main where
 
 import Prelude hiding (readFile)
-import System.IO (stdout, stderr, hPutStrLn, hPutStr, putStr)
+import System.IO (stdout, stderr, hPutStrLn, putStr, IOMode(..), withFile)
 
 import Control.Monad
 import Data.Bifunctor
@@ -33,6 +33,10 @@ import Text.UbuntuSecurityTracker.CVE.Parser (cveParser)
 import Text.UbuntuSecurityTracker.CVE.ValidatorImpl (fillCVE)
 import System.IO.Strict (readFile)
 import System.Console.CmdArgs.Implicit
+import Codec.Compression.Zlib (compress)
+import Data.ByteString.Lazy (hPutStr)
+import Data.Text.Lazy (pack)
+import Data.Text.Lazy.Encoding (encodeUtf8)
 
 data ArgParser =
   ArgParser
@@ -57,15 +61,22 @@ argparser =
 main = do
   args <- cmdArgs argparser
   
-  let release = ""
+  let releases = release args
   let files = cves args
+  let buildGeneric = generic args
 
   parsed <- mapM parseFile files
   let (errors, cves) = partitionEithers parsed
+  let render r = renderDebsecanDB r cves
 
   forM_ errors $ hPutStrLn stderr
-  putStr $ renderDebsecanDB release cves
+  forM_ releases $ \x -> writeOutput x (render x)
+  when buildGeneric (writeOutput "GENERIC" (render ""))
 
   where
     parseFile :: FilePath -> IO (Either String CVE)
     parseFile fn = parseAndValidate fn <$> readFile fn
+
+    writeOutput :: FilePath -> String -> IO ()
+    writeOutput fp s = withFile fp WriteMode (\h -> hPutStr h ((compress . encodeUtf8 . pack) s))
+        
