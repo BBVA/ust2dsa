@@ -1,10 +1,8 @@
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 
 module Main where
 
 import Prelude hiding (readFile)
-import Options.Generic
 import System.IO (stdout, stderr, hPutStrLn, hPutStr, putStr)
 
 import Control.Monad
@@ -19,15 +17,33 @@ import Text.UbuntuSecurityTracker.CVE (parseAndValidate)
 import Text.UbuntuSecurityTracker.CVE.Parser (cveParser)
 import Text.UbuntuSecurityTracker.CVE.ValidatorImpl (fillCVE)
 import System.IO.Strict (readFile)
+import System.Console.CmdArgs.Implicit
 
-data Args =
-  Args String [String]
-  deriving (Generic, Show)
+data ArgParser =
+  ArgParser
+    { check :: Bool
+    , manifest :: String
+    , release :: [String]
+    , generic :: Bool
+    , cves :: [String]
+    }
+  deriving (Show, Data, Typeable)
 
-instance ParseRecord Args
+argparser =
+  ArgParser
+    { check = def &= help "Only check CVE files for errors"
+    , manifest = def &= help "Base URI to Ubuntu's release manifest"
+    , release = def &= help "Ubuntu release codename"
+    , generic = def &= help "Build a GENERIC database"
+    , cves = def &= args
+    } &= program "ust2dsa"
+      &= summary "Ubuntu Security Tracker ...."
 
 main = do
-  (Args release files) <- getRecord "Ubuntu Security Tracker To Debsecan File"
+  args <- cmdArgs argparser
+  
+  let release = ""
+  let files = cves args
 
   parsed <- mapM parseFile files
   let (errors, cves) = partitionEithers parsed
