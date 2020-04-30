@@ -24,5 +24,5 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: License Checker
-      uses: nilp0inter/license_checker@v1.0.5
+      uses: nilp0inter/license_checker@v1.0.6
 
