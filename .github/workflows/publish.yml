@@ -39,7 +39,7 @@ jobs:
     - name: Clone Ubuntu CVE Tracker repo
       run: |
         REPO=ubuntu-cve-tracker
-        git clone --depth 0 https://git.launchpad.net/"$REPO" /tmp/"$REPO"
+        git clone --depth 1 https://git.launchpad.net/"$REPO" /tmp/"$REPO"
 
     - name: Run ust2dsa
       run: |
