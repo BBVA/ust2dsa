@@ -2,18 +2,18 @@
 
 ## Tasks
 
-- [✓] Obtain repo in BBVA's GitHub org (request to LEGAL dept.)
-- [✓] git filter-branch pancho's email
-- [✓] Add legal headers to code files
-- [✓] Move repo to BBVA's
-- [✓] Build a static release and publish it (this enables us to show it around)
-- [✓] Integrate tool with Patton
-- [✓] Build a pipeline to build the tool
+- [x] Obtain repo in BBVA's GitHub org (request to LEGAL dept.)
+- [x] git filter-branch pancho's email
+- [x] Add legal headers to code files
+- [x] Move repo to BBVA's
+- [x] Build a static release and publish it (this enables us to show it around)
+- [x] Integrate tool with Patton
+- [x] Build a pipeline to build the tool
 - [ ] Build a pipeline for publishing GENERIC and any other release
 - [ ] Document usage so that we can communicate with Ubuntu
 - [ ] Contact Ubuntu and introduce the prj to them
 - [ ] Cleanup: Move things around to improve readability
-- [✓] Cleanup: purge unused code from the PoC
+- [x] Cleanup: purge unused code from the PoC
 - [ ] Implement Sources section
 - [ ] Implement CVSS parser and maybe contribute it to the Haskell community
 - [ ] Try to ensure a smooth out-of-the-box experience for ubuntu users of Debsecan (possibly requesting Ubuntu with a PR)
