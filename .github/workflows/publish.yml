@@ -24,7 +24,7 @@ jobs:
       with:
         repo: "BBVA/ust2dsa"
         version: "latest"
-        file: "ust2dsa"
+        file: "/usr/local/bin/ust2dsa"
 
     - name: TEST try to run ust2dsa
       run: BINARY=./ust2dsa; chmod +x $BINARY; $BINARY --help
