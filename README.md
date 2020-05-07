@@ -15,7 +15,25 @@ suitable for `debsecan`.
 
 ## Usage
 
-TODO
+### For end-users
+
+#### Ubuntu since eoan (19.10)
+
+```sh
+debsecan --suite $(lsb_release --codename --short) --source https://raw.githubusercontent.com/BBVA/ust2dsa/data/
+```
+
+#### Ubuntu (any release)
+CAVEAT EMPTOR: The list of available fixes for your particular system won't be produced in this case.
+
+```sh
+debsecan --source https://raw.githubusercontent.com/BBVA/ust2dsa/data/
+```
+
+
+### For database maintainers
+
+**TODO**
 
 
 ## debsecan database format
