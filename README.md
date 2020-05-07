@@ -1,7 +1,22 @@
-# ubuntu-cve-tracker2debsecan
+# UST2DSA
 
-![License check](https://github.com/nilp0inter/ubuntu-cve-tracker2debsecan/workflows/License%20check/badge.svg)
-![Haskell CI](https://github.com/nilp0inter/ubuntu-cve-tracker2debsecan/workflows/Haskell%20CI/badge.svg)
+![License check](https://github.com/BBVA/ust2dsa/workflows/License%20check/badge.svg)
+![Haskell CI](https://github.com/BBVA/ust2dsa/workflows/Haskell%20CI/badge.svg)
+
+
+This tool aims to enable Ubuntu users to leverage Debian's [`debsecan`][DEBSECAN]
+vulnerability analysis and reporting tool.
+
+Feeding from the [Ubuntu CVE Tracker][UCVET], it produces vulnerability databases
+suitable for `debsecan`.
+
+[DEBSECAN]: https://gitlab.com/fweimer/debsecan
+[UCVET]: https://people.canonical.com/~ubuntu-security/cve/
+
+## Usage
+
+TODO
+
 
 ## debsecan database format
 

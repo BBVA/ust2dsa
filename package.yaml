@@ -1,10 +1,10 @@
 name:                ubuntu-cve-tracker2debsecan
 version:             0.1.0.0
 github:              "nilp0inter/ubuntu-cve-tracker2debsecan"
-license:             BSD3
-author:              "Roberto Abdelkader Martínez Pérez"
-maintainer:          "robertomartinezp@gmail.com"
-copyright:           "2020 Roberto Abdelkader Martínez Pérez"
+license:             Apache-2.0
+author:              "Roberto Abdelkader Martínez Pérez <robertomartinezp@gmail.com>, pancho horrillo <pedrofelipe.horrillo@bbva.com>"
+maintainer:          "robertoabdelkader.martinez@bbva.com"
+copyright:           "2020 Banco Bilbao Vizcaya Argentaria, S.A."
 
 extra-source-files:
 - README.md
