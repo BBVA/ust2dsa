@@ -69,6 +69,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_stable_release.outputs.upload_url }}
-        asset_path: ~/.local/bin/ust2dsa
+        asset_path: /home/runner/.local/bin/ust2dsa
         asset_name: ust2dsa
         asset_content_type: application/x-executable
