@@ -1,0 +1,24 @@
+name: Cook CVE database and publish it
+
+on:
+  schedule:
+    - cron:  '0 */6 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone data branch current repo
+      uses: actions/checkout@v2
+      with:
+        ref: data
+
+    - name: Obtain latest release of ust2dsa
+      uses: dsaltares/fetch-gh-release-asset@8cb83a34e794f747d55fd1bdc5dd7178890e4bf2
+      with:
+        repo: "BBVA/ust2dsa"
+        version: "latest"
+        file: "ust2dsa"
+
+    - name: TEST try to run ust2dsa
+      run: BINARY=./ust2dsa; chmod +x $BINARY; $BINARY --help
