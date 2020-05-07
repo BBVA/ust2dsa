@@ -1,43 +1,42 @@
+# To Do
+
+## Tasks
+
 - [✓] Obtain repo in BBVA's GitHub org (request to LEGAL dept.)
 - [✓] git filter-branch pancho's email
 - [✓] Add legal headers to code files
-- [ ] Move repo to BBVA's
+- [✓] Move repo to BBVA's
 - [✓] Build a static release and publish it (this enables us to show it around)
 - [✓] Integrate tool with Patton
+- [✓] Build a pipeline to build the tool
+- [ ] Build a pipeline for publishing GENERIC and any other release
 - [ ] Document usage so that we can communicate with Ubuntu
 - [ ] Contact Ubuntu and introduce the prj to them
 - [ ] Cleanup: Move things around to improve readability
 - [✓] Cleanup: purge unused code from the PoC
-- [✓] Build a pipeline to build the tool
-- [ ] Build a pipeline for publishing GENERIC and any other release
 - [ ] Implement Sources section
 - [ ] Implement CVSS parser and maybe contribute it to the Haskell community
 - [ ] Try to ensure a smooth out-of-the-box experience for ubuntu users of Debsecan (possibly requesting Ubuntu with a PR)
 - [ ] Profit!
 
-# Possible Adoption by the Community
-## Ideal Scenario
+
+## Possible Adoption by the Community
+
+They have a [decade-old issue][IILF] still open.
+
+[IILF]: https://bugs.launchpad.net/ubuntu/+source/debsecan/+bug/95925
+
+
+### Ideal Scenario
+
 - Ubuntu adopts this trasformer and integrates it into its security pipeline to
   produce the required databases.
 
-- Debian accepts a patch to debsecan to compatibilize it with Ubuntu (involving
-  the use of lsb_release -si, which is installed as a transitive dependency of
-  debsecan).
-
-This scenario seems quite future-proof to us.
+  This scenario seems quite future-proof to us.
 
 
-## Suboptimal Scenario #1
-- Debian does not accept our changes to debsecan
- - Ubuntu accepts our patch to debsecan
-   No harm done. Essentially, we are virtually on the ideal scenario.
- - Ubuntu does not accept our patch to debsecan
-   Unlikely.  They have a decade-old issue¹ still open.
+### Suboptimal Scenario
 
-¹: https://bugs.launchpad.net/ubuntu/+source/debsecan/+bug/95925
-
-
-## Suboptimal Scenario #2
 - Ubuntu does not accept this converter nor enhancing their pipeline with it
   In this case we would provide a container with the necessary elements to
   produce the report ourselves.
