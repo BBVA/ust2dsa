@@ -19,7 +19,8 @@ jobs:
 
     - name: Reset HEAD to the first commit
       run: |
-        git reset --hard $(git log --reverse | tail -n1 | awk '{ print $2 }')
+        FIRST_COMMIT=$(git log --pretty=oneline --reverse | head -n1 | awk '{ print $1 }')
+        git reset --hard "${FIRST_COMMIT}"
 
     - name: Obtain latest release of ust2dsa
       uses: dsaltares/fetch-gh-release-asset@8cb83a34e794f747d55fd1bdc5dd7178890e4bf2
