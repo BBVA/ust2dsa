@@ -1,5 +1,5 @@
 name:                ubuntu-cve-tracker2debsecan
-version:             0.1.0.0
+version:             0.1.0
 github:              "nilp0inter/ubuntu-cve-tracker2debsecan"
 license:             Apache-2.0
 author:              "Roberto Abdelkader Martínez Pérez <robertomartinezp@gmail.com>, pancho horrillo <pedrofelipe.horrillo@bbva.com>"
