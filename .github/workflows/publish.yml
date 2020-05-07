@@ -17,6 +17,10 @@ jobs:
       with:
         ref: data
 
+    - name: Reset HEAD to the first commit
+      run: |
+        git reset --hard $(git log --reverse | tail -n1 | awk '{ print $2 }')
+
     - name: Obtain latest release of ust2dsa
       uses: dsaltares/fetch-gh-release-asset@8cb83a34e794f747d55fd1bdc5dd7178890e4bf2
       env:
@@ -31,6 +35,27 @@ jobs:
         sudo install ust2dsa /usr/local/bin/
         rm -f ust2dsa
 
-    - name: TEST run ust2dsa
+    - name: Clone Ubuntu CVE Tracker repo
       run: |
-        ust2dsa --help
+        REPO=ubuntu-cve-tracker
+        git clone --depth 0 https://git.launchpad.net/"$REPO" /tmp/"$REPO"
+
+    - name: Run ust2dsa
+      run: |
+        ust2dsa                                 \
+          --generic                             \
+          --release=groovy                      \
+          --release=focal                       \
+          --release=eoan                        \
+          --release=bionic                      \
+          --release=xenial                      \
+          --release=trusty                      \
+          /tmp/ubuntu-cve-tracker/active/CVE-*
+
+    - name: Commit and push
+      run: |
+        git config user.name 'Release Bot'
+        git config user.email 'release-bot@lafundacion'
+        git add .
+        git commit --amend
+        git push --force-with-lease origin data
