@@ -26,9 +26,11 @@ jobs:
         version: latest
         file: ust2dsa
 
-    - name: TEST try to run ust2dsa
+    - name: Install ust2dsa
       run: |
-        BINARY=/usr/local/bin/ust2dsa;
-        sudo mv -v ust2dsa /usr/local/bin;
-        sudo chmod +x $BINARY;
-        $BINARY --help
+        sudo install ust2dsa /usr/local/bin/
+        rm -f ust2dsa
+
+    - name: TEST run ust2dsa
+      run: |
+        ust2dsa --help
