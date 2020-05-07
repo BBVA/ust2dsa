@@ -58,5 +58,5 @@ jobs:
         git config user.name 'Release Bot'
         git config user.email 'release-bot@lafundacion'
         git add .
-        git commit --amend
+        git commit --amend -m "$(date)"
         git push --force-with-lease origin data
