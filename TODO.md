@@ -9,7 +9,7 @@
 - [x] Build a static release and publish it (this enables us to show it around)
 - [x] Integrate tool with Patton
 - [x] Build a pipeline to build the tool
-- [ ] Build a pipeline for publishing GENERIC and any other release
+- [x] Build a pipeline for publishing GENERIC and any other release
 - [ ] Document usage so that we can communicate with Ubuntu
 - [ ] Contact Ubuntu and introduce the prj to them
 - [ ] Cleanup: Move things around to improve readability
