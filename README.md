@@ -38,5 +38,5 @@ debsecan --source https://raw.githubusercontent.com/BBVA/ust2dsa/data/
 ## Data feed
 
 This git repository has an orphan branch named `data`.  In this branch,
-vulnerability information from the *Ubuntu CVE Tracker* are compiled in *debsecan*
+vulnerability information from the *Ubuntu CVE Tracker* is compiled in *debsecan*
 format every **6 hours**.
