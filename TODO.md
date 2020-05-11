@@ -16,6 +16,8 @@
 - [ ] Implement CVSS parser and maybe contribute it to the Haskell community
 - [ ] Implement Sources section
 - [ ] Cleanup: Move things around to improve readability
+  - [ ] Normalize naming of haskell source filenames (suffix Impl)
+  - [ ] Rename "not vulnerable" to "non-vulnerable"
 - [ ] Try to ensure a smooth out-of-the-box experience for ubuntu users of Debsecan (possibly sending Ubuntu a PR setting the default --source URL)
 - [ ] Profit!
 
