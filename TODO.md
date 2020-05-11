@@ -10,13 +10,13 @@
 - [x] Integrate tool with Patton
 - [x] Build a pipeline to build the tool
 - [x] Build a pipeline for publishing GENERIC and any other release
-- [ ] Document usage so that we can communicate with Ubuntu
-- [ ] Contact Ubuntu and introduce the prj to them
-- [ ] Cleanup: Move things around to improve readability
+- [x] Document usage so that we can communicate with Ubuntu
+- [x] Contact Ubuntu and introduce the prj to them
 - [x] Cleanup: purge unused code from the PoC
-- [ ] Implement Sources section
 - [ ] Implement CVSS parser and maybe contribute it to the Haskell community
-- [ ] Try to ensure a smooth out-of-the-box experience for ubuntu users of Debsecan (possibly requesting Ubuntu with a PR)
+- [ ] Implement Sources section
+- [ ] Cleanup: Move things around to improve readability
+- [ ] Try to ensure a smooth out-of-the-box experience for ubuntu users of Debsecan (possibly sending Ubuntu a PR setting the default --source URL)
 - [ ] Profit!
 
 
