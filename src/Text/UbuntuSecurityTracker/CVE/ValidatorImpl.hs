@@ -24,6 +24,7 @@ import Control.Monad
 import Data.UbuntuSecurityTracker.CVE
 import qualified Data.UbuntuSecurityTracker.CVE.Package as P
 import Data.UbuntuSecurityTracker.CVE.Token
+import Data.List (isInfixOf)
 
 fillCVE :: [Token] -> Either String CVE
 fillCVE = foldM honorToken emptyCVE
@@ -42,7 +43,8 @@ honorToken c (Metadata k v)
        | v == "untriaged" -> Right c {priority = Nothing}
        | otherwise -> Left $ "unknown priority value '" ++ v ++ "'"
   | k == "CVSS" =
-    if | v /= "" -> Right c {isRemote = Just True}
+    if | "/AV:N/" `isInfixOf` v -> Right c {isRemote = Just True}
+       | "/AV:" `isInfixOf` v -> Right c {isRemote = Just False}
        | otherwise -> Right c
   | otherwise = Right c
 honorToken c (RPS r p s Nothing) = Right c
