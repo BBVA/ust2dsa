@@ -41,6 +41,9 @@ honorToken c (Metadata k v)
        | v == "negligible" -> Right c {priority = Just L}
        | v == "untriaged" -> Right c {priority = Nothing}
        | otherwise -> Left $ "unknown priority value '" ++ v ++ "'"
+  | k == "CVSS" =
+    if | v /= "" -> Right c {isRemote = Just True}
+       | otherwise -> Right c
   | otherwise = Right c
 honorToken c (RPS r p s Nothing) = Right c
 honorToken c@CVE {affected = aps} (RPS r p s cv) =
