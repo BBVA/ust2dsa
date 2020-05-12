@@ -36,6 +36,9 @@ spec = do
     it "should fill the description field with the `Description` Metadata" $
       do honorToken emptyCVE (Metadata "Description" "foo")
          `shouldBe` Right emptyCVE {description = Just "foo"}
+    it "should fill the isRemote field with Nothing if the CVSS key has an empty value" $
+      do honorToken emptyCVE (Metadata "CVSS" "")
+         `shouldBe` Right emptyCVE {isRemote = Nothing}
     it "should fill the priority field with the `Priority` Metadata (low)" $
       do honorToken emptyCVE (Metadata "Priority" "low")
          `shouldBe` Right emptyCVE {priority = Just L}
