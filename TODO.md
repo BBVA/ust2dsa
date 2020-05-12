@@ -13,7 +13,8 @@
 - [x] Document usage so that we can communicate with Ubuntu
 - [x] Contact Ubuntu and introduce the prj to them
 - [x] Cleanup: purge unused code from the PoC
-- [ ] Implement CVSS parser and maybe contribute it to the Haskell community
+- [x] Implement CVSS parser
+  - [ ] ~maybe contribute it to the Haskell community~: Does not apply: we just tested for one case
 - [ ] Implement Sources section
 - [ ] Cleanup: Move things around to improve readability
   - [ ] Normalize naming of haskell source filenames (suffix Impl)
