@@ -14,7 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -}
 
-module Data.UbuntuSecurityTracker.CVE.Token
+{-# LANGUAGE DeriveGeneric #-}
+
+module Data.UbuntuSecurityTracker.CVE.TokenImpl
   ( Token(..)
   , Status(..)
   , Notes
@@ -22,10 +24,35 @@ module Data.UbuntuSecurityTracker.CVE.Token
   , Release
   ) where
 
-import Data.UbuntuSecurityTracker.CVE.TokenImpl
-  ( Token(..)
-  , Status(..)
-  , Notes
-  , Package
-  , Release
-  )
+import GHC.Generics
+
+type Package = String
+
+type Release = String
+
+type Notes = String
+
+data Status
+  -- Affected version does not exist in the archive
+  = DNE
+  -- Still undecided
+  | NEEDSTRIAGE
+  -- Not vulnerable
+  | NOTAFFECTED
+  -- Vulnerable, but not important
+  | IGNORED
+  -- Package is vulnerable
+  | NEEDED
+  | ACTIVE
+  | PENDING
+  | DEFERRED
+  -- Fixed
+  | RELEASED
+  | RELEASEDESM
+  deriving (Generic, Show, Eq, Ord)
+
+data Token
+  = Metadata String String
+  | RPS Release Package Status (Maybe Notes)
+  | Ignored String
+  deriving (Show, Eq, Ord)
