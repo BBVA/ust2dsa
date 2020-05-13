@@ -1,6 +1,6 @@
 name:                ubuntu-cve-tracker2debsecan
 version:             0.1.0
-github:              "nilp0inter/ubuntu-cve-tracker2debsecan"
+github:              "BBVA/ust2dsa"
 license:             Apache-2.0
 author:              "Roberto Abdelkader Martínez Pérez <robertomartinezp@gmail.com>, pancho horrillo <pancho.horrillo@bbva.com>"
 maintainer:          "robertoabdelkader.martinez@bbva.com"
