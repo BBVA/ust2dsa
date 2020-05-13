@@ -13,22 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -}
-module Text.UbuntuSecurityTracker.CVE where
+module Text.UbuntuSecurityTracker.CVE
+  ( parseAndValidate
+  ) where
 
-import Data.Bifunctor
-import Text.Parsec
-
-import Control.Monad ((>=>))
-import Data.DebianSecurityAnalyzer.CVE (CVE (..), mapCVE)
-import Text.UbuntuSecurityTracker.CVE.Parser (parseWithErrors)
-import Data.UbuntuSecurityTracker.CVE.Token (Token)
-import Text.UbuntuSecurityTracker.CVE.Validator (fillCVE)
-
-parseAndValidate :: String -> String -> Either String CVE
-parseAndValidate filename content = first addFilenameToError $ parseAndValidate' content
-  where
-    addFilenameToError :: String -> String
-    addFilenameToError e = filename ++ ": " ++ e
-    
-    parseAndValidate' :: String -> Either String CVE
-    parseAndValidate' = parseWithErrors >=> fillCVE >=> mapCVE
+import Text.UbuntuSecurityTracker.CVEImpl (parseAndValidate)
