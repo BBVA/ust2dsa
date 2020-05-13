@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -}
 module Data.DebianSecurityAnalyzer.CVE
-  ( CVE (..)
+  ( CVE(..)
   , mapCVE
   , combineFilters
   , getUnstableVersion
@@ -25,7 +25,7 @@ module Data.DebianSecurityAnalyzer.CVE
   ) where
 
 import Data.DebianSecurityAnalyzer.CVEImpl
-  ( CVE (..)
+  ( CVE(..)
   , mapCVE
   , combineFilters
   , getUnstableVersion
