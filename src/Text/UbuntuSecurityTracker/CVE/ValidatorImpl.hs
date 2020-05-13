@@ -30,7 +30,6 @@ import Data.List (isInfixOf)
 fillCVE :: [Token] -> Either String CVE
 fillCVE = foldM honorToken emptyCVE
 
--- TODO: Fill isRemote field when a CVSS parser is available
 honorToken :: CVE -> Token -> Either String CVE
 honorToken c (Ignored _) = Right c
 honorToken c (Metadata k v)
