@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-|
 Copyright 2020 Banco Bilbao Vizcaya Argentaria, S.A.
 
@@ -14,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -}
+
+{-# LANGUAGE OverloadedStrings #-}
 
 module Data.DebianSecurityAnalyzer.CVESpec where
 
