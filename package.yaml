@@ -2,7 +2,7 @@ name:                ubuntu-cve-tracker2debsecan
 version:             0.1.0
 github:              "nilp0inter/ubuntu-cve-tracker2debsecan"
 license:             Apache-2.0
-author:              "Roberto Abdelkader Martínez Pérez <robertomartinezp@gmail.com>, pancho horrillo <pedrofelipe.horrillo@bbva.com>"
+author:              "Roberto Abdelkader Martínez Pérez <robertomartinezp@gmail.com>, pancho horrillo <pancho.horrillo@bbva.com>"
 maintainer:          "robertoabdelkader.martinez@bbva.com"
 copyright:           "2020 Banco Bilbao Vizcaya Argentaria, S.A."
 
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/nilp0inter/ubuntu-cve-tracker2debsecan#readme>
+description:         Please see the README on GitHub at <https://github.com/BBVA/ust2dsa#readme>
 
 dependencies:
 - base >= 4.7 && < 5
