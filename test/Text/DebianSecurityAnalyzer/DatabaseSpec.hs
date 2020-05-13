@@ -121,7 +121,7 @@ spec = do
                         , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="devel"
-                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  , UP.status=UP.NONVULNERABLE "1.0"
                                                   } ]
                         }
           in renderPackage "qux" 0 "package" cve
@@ -135,7 +135,7 @@ spec = do
                         , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="upstream"
-                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  , UP.status=UP.NONVULNERABLE "1.0"
                                                   } ]
                         }
           in renderPackage "qux" 0 "package" cve
@@ -149,11 +149,11 @@ spec = do
                         , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="bionic"
-                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  , UP.status=UP.NONVULNERABLE "1.0"
                                                   }
                                      , UP.Package { UP.name="package"
                                                   , UP.release="feasty"
-                                                  , UP.status=UP.NOTVULNERABLE "2.0"
+                                                  , UP.status=UP.NONVULNERABLE "2.0"
                                                   } ]
                         }
           in renderPackage "qux" 0 "package" cve
@@ -167,11 +167,11 @@ spec = do
                         , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release="devel"
-                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  , UP.status=UP.NONVULNERABLE "1.0"
                                                   }
                                      , UP.Package { UP.name="package"
                                                   , UP.release="feasty"
-                                                  , UP.status=UP.NOTVULNERABLE "2.0"
+                                                  , UP.status=UP.NONVULNERABLE "2.0"
                                                   } ]
                         }
           in renderPackage "qux" 0 "package" cve
@@ -215,7 +215,7 @@ spec = do
                         , isRemote = Just False
                         , affected = [ UP.Package { UP.name="package"
                                                   , UP.release=r
-                                                  , UP.status=UP.NOTVULNERABLE "1.0"
+                                                  , UP.status=UP.NONVULNERABLE "1.0"
                                                   }
                                      ]
                         }
@@ -246,15 +246,15 @@ spec = do
                       , isRemote = Just False
                       , affected = [ UP.Package { UP.name = "baz"
                                                 , UP.release = "devel"
-                                                , UP.status = UP.NOTVULNERABLE "1.0"
+                                                , UP.status = UP.NONVULNERABLE "1.0"
                                                 }
                                    , UP.Package { UP.name = "qux"
                                                 , UP.release = "bionic"
-                                                , UP.status = UP.NOTVULNERABLE "2.0"
+                                                , UP.status = UP.NONVULNERABLE "2.0"
                                                 }
                                    , UP.Package { UP.name = "qux"
                                                 , UP.release = "upstream"
-                                                , UP.status = UP.NOTVULNERABLE "1.5"
+                                                , UP.status = UP.NONVULNERABLE "1.5"
                                                 }]
                       }
         in renderDebsecanDB "foo" [cve]
@@ -267,7 +267,7 @@ spec = do
                        , isRemote = Just False
                        , affected = [ UP.Package { UP.name = "baz"
                                                  , UP.release = "devel"
-                                                 , UP.status = UP.NOTVULNERABLE "1.0"
+                                                 , UP.status = UP.NONVULNERABLE "1.0"
                                                  } ]
                        }
             cve2 = CVE { name = "CVE-1974-0719"
@@ -276,11 +276,11 @@ spec = do
                        , isRemote = Just False
                        , affected = [ UP.Package { UP.name = "qux"
                                                  , UP.release = "bionic"
-                                                 , UP.status = UP.NOTVULNERABLE "2.0"
+                                                 , UP.status = UP.NONVULNERABLE "2.0"
                                                  }
                                     , UP.Package { UP.name = "qux"
                                                  , UP.release = "upstream"
-                                                 , UP.status = UP.NOTVULNERABLE "1.5"
+                                                 , UP.status = UP.NONVULNERABLE "1.5"
                                                  } ]
                        }
         in renderDebsecanDB "foo" [cve1, cve2]

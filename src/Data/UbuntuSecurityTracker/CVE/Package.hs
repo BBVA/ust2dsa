@@ -32,16 +32,16 @@ import GHC.Generics
 
 data Status
   = VULNERABLE String
-  | NOTVULNERABLE String
+  | NONVULNERABLE String
   deriving (Generic, Show, Eq, Ord)
 
 isVulnerable :: Status -> Bool
 isVulnerable (VULNERABLE _) = True
-isVulnerable (NOTVULNERABLE _) = False
+isVulnerable (NONVULNERABLE _) = False
 
 getVersion :: Status -> String
 getVersion (VULNERABLE r) = r
-getVersion (NOTVULNERABLE r) = r
+getVersion (NONVULNERABLE r) = r
 
 data Package =
   Package
@@ -66,10 +66,10 @@ mapStatus' T.NEEDED = VULNERABLE
 mapStatus' T.ACTIVE  = VULNERABLE
 mapStatus' T.PENDING = VULNERABLE
 mapStatus' T.DEFERRED = VULNERABLE
-mapStatus' T.DNE = NOTVULNERABLE
-mapStatus' T.NEEDSTRIAGE = NOTVULNERABLE
-mapStatus' T.NOTAFFECTED = NOTVULNERABLE
-mapStatus' T.IGNORED = NOTVULNERABLE
-mapStatus' T.RELEASED = NOTVULNERABLE
-mapStatus' T.RELEASEDESM = NOTVULNERABLE
+mapStatus' T.DNE = NONVULNERABLE
+mapStatus' T.NEEDSTRIAGE = NONVULNERABLE
+mapStatus' T.NOTAFFECTED = NONVULNERABLE
+mapStatus' T.IGNORED = NONVULNERABLE
+mapStatus' T.RELEASED = NONVULNERABLE
+mapStatus' T.RELEASEDESM = NONVULNERABLE
 

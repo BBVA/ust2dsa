@@ -19,7 +19,7 @@
 	wget http://ftp.ubuntu.com/ubuntu/dists/{bionic,eoan,focal,groovy,trusty,xenial}{,-security,-updates,-proposed}/{main,universe,multiverse,restricted}/source/Sources.xz
 - [ ] Cleanup: Move things around to improve readability
   - [ ] Normalize naming of haskell source filenames (suffix Impl)
-  - [ ] Rename "not vulnerable" to "non-vulnerable"
+  - [x] Rename "not vulnerable" to "non-vulnerable"
 - [ ] Try to ensure a smooth out-of-the-box experience for ubuntu users of Debsecan (possibly sending Ubuntu a PR setting the default --source URL)
 - [ ] Profit!
 

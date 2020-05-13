@@ -76,4 +76,4 @@ spec = do
     it "should add packages to affected list when package metadata sufficient" $
       do honorToken emptyCVE (RPS "foo" "bar" DNE (Just "1.0"))
          `shouldBe`
-         Right emptyCVE{affected=[P.Package "foo" "bar" (P.NOTVULNERABLE "1.0")]}
+         Right emptyCVE{affected=[P.Package "foo" "bar" (P.NONVULNERABLE "1.0")]}

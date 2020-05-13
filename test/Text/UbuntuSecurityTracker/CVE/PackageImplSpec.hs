@@ -40,17 +40,17 @@ spec = do
         mapStatus T.ACTIVE (Just "1.0") `shouldBe` (Just $ VULNERABLE "1.0")
         mapStatus T.PENDING (Just "1.0") `shouldBe` (Just $ VULNERABLE "1.0")
         mapStatus T.DEFERRED (Just "1.0") `shouldBe` (Just $ VULNERABLE "1.0")
-      it "should map Ubuntu's package status to NOTVULNERABLE" $ do
-        mapStatus T.DNE (Just "1.0") `shouldBe` (Just $ NOTVULNERABLE "1.0")
+      it "should map Ubuntu's package status to NONVULNERABLE" $ do
+        mapStatus T.DNE (Just "1.0") `shouldBe` (Just $ NONVULNERABLE "1.0")
         mapStatus T.NEEDSTRIAGE (Just "1.0") `shouldBe`
-          (Just $ NOTVULNERABLE "1.0")
+          (Just $ NONVULNERABLE "1.0")
         mapStatus T.NOTAFFECTED (Just "1.0") `shouldBe`
-          (Just $ NOTVULNERABLE "1.0")
-        mapStatus T.IGNORED (Just "1.0") `shouldBe` (Just $ NOTVULNERABLE "1.0")
+          (Just $ NONVULNERABLE "1.0")
+        mapStatus T.IGNORED (Just "1.0") `shouldBe` (Just $ NONVULNERABLE "1.0")
         mapStatus T.RELEASED (Just "1.0") `shouldBe`
-          (Just $ NOTVULNERABLE "1.0")
+          (Just $ NONVULNERABLE "1.0")
         mapStatus T.RELEASEDESM (Just "1.0") `shouldBe`
-          (Just $ NOTVULNERABLE "1.0")
+          (Just $ NONVULNERABLE "1.0")
     describe "when a version isn't provided" $ do
       it "should return Nothing" $ property $
         \x -> mapStatus x Nothing == Nothing

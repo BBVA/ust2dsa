@@ -66,48 +66,48 @@ spec = do
       it "should return Nothing when no packages are affected" $ do
         D.getUnstableVersion "foo" [] `shouldBe` Nothing
       it "should return Nothing when affected packages don't match the given name" $ do
-        D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NOTVULNERABLE "1.0") ]
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NONVULNERABLE "1.0") ]
         `shouldBe`
         Nothing
       it "should return Just the version when an affected package match the given name" $ do
-        D.getUnstableVersion "foo" [ UP.Package "upstream" "foo" (UP.NOTVULNERABLE "1.0") ]
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "foo" (UP.NONVULNERABLE "1.0") ]
         `shouldBe`
         Just "1.0"
       it "should return Just the version when any affected package match the given name" $ do
-        D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NOTVULNERABLE "2.0")
-                                   , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "1.0") ]
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.NONVULNERABLE "2.0")
+                                   , UP.Package "upstream" "foo" (UP.NONVULNERABLE "1.0") ]
         `shouldBe`
         Just "1.0"
       it "should return Just the version when any affected package match the given name (II)" $ do
         D.getUnstableVersion "foo" [ UP.Package "upstream" "bar" (UP.VULNERABLE "2.0")
-                                   , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "1.0") ]
+                                   , UP.Package "upstream" "foo" (UP.NONVULNERABLE "1.0") ]
         `shouldBe`
         Just "1.0"
       it "should return Nothing if devel and upstream suite are not present" $ do
         D.getUnstableVersion "foo" [ UP.Package "bionic" "bar" (UP.VULNERABLE "2.0")
-                                   , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.0") ]
+                                   , UP.Package "bionic" "foo" (UP.NONVULNERABLE "1.0") ]
         `shouldBe`
         Nothing
       it "should return devel version preferably" $ do
-        D.getUnstableVersion "foo" [ UP.Package "upstream" "foo" (UP.NOTVULNERABLE "2.0")
-                                   , UP.Package "devel" "foo" (UP.NOTVULNERABLE "1.0") ]
+        D.getUnstableVersion "foo" [ UP.Package "upstream" "foo" (UP.NONVULNERABLE "2.0")
+                                   , UP.Package "devel" "foo" (UP.NONVULNERABLE "1.0") ]
         `shouldBe`
         Just "1.0"
       it "should return devel version preferably (II)" $ do
-        D.getUnstableVersion "foo" [ UP.Package "devel" "foo" (UP.NOTVULNERABLE "1.0")
-                                   , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "2.0") ]
+        D.getUnstableVersion "foo" [ UP.Package "devel" "foo" (UP.NONVULNERABLE "1.0")
+                                   , UP.Package "upstream" "foo" (UP.NONVULNERABLE "2.0") ]
         `shouldBe`
         Just "1.0"
     describe "getOtherVersions extracts the unstable version from a list of affected packages" $ do
       it "should return an empty list when no packages are affected" $ do
         D.getOtherVersions "foo" [] `shouldBe` []
       it "should return an empty list when no packages match the given name" $ do
-        D.getOtherVersions "foo" [ UP.Package "devel" "bar" (UP.NOTVULNERABLE "1.0")
+        D.getOtherVersions "foo" [ UP.Package "devel" "bar" (UP.NONVULNERABLE "1.0")
                                  , UP.Package "bionic" "baz" (UP.VULNERABLE "2.0") ]
         `shouldBe`
         []
       it "should return an empty list when no packages match the given name" $ do
-        D.getOtherVersions "foo" [ UP.Package "bionic" "bar" (UP.NOTVULNERABLE "1.0")
+        D.getOtherVersions "foo" [ UP.Package "bionic" "bar" (UP.NONVULNERABLE "1.0")
                                  , UP.Package "devel" "baz" (UP.VULNERABLE "2.0") ]
         `shouldBe`
         []
@@ -115,15 +115,15 @@ spec = do
         D.getOtherVersions "foo" [ UP.Package "devel" "foo" (UP.VULNERABLE "1.0")
                                  , UP.Package "bionic" "foo" (UP.VULNERABLE "2.0")
                                  , UP.Package "upstream" "foo" (UP.VULNERABLE "3.0")
-                                 , UP.Package "devel" "foo" (UP.NOTVULNERABLE "4.0")
-                                 , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "5.0")
-                                 , UP.Package "upstream" "foo" (UP.NOTVULNERABLE "6.0") ]
+                                 , UP.Package "devel" "foo" (UP.NONVULNERABLE "4.0")
+                                 , UP.Package "bionic" "foo" (UP.NONVULNERABLE "5.0")
+                                 , UP.Package "upstream" "foo" (UP.NONVULNERABLE "6.0") ]
         `shouldBe`
         ["5.0"]
       it "should not return duplicates" $ do
-        D.getOtherVersions "foo" [ UP.Package "bar" "foo" (UP.NOTVULNERABLE "1.0")
-                                 , UP.Package "baz" "foo" (UP.NOTVULNERABLE "1.0")
-                                 , UP.Package "qux" "foo" (UP.NOTVULNERABLE "2.0") ]
+        D.getOtherVersions "foo" [ UP.Package "bar" "foo" (UP.NONVULNERABLE "1.0")
+                                 , UP.Package "baz" "foo" (UP.NONVULNERABLE "1.0")
+                                 , UP.Package "qux" "foo" (UP.NONVULNERABLE "2.0") ]
         `shouldBe`
         ["1.0", "2.0"]
     describe "getFlagUrgency extracts the Urgency flag" $ do
@@ -162,7 +162,7 @@ spec = do
         `shouldBe`
         ' '
       it "should return an F when there is a fix available" $ do
-        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.0")]
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "foo" (UP.NONVULNERABLE "1.0")]
         `shouldBe`
         'F'
       it "should return an <space> when there is no fix available (status mismatch)" $ do
@@ -170,20 +170,20 @@ spec = do
         `shouldBe`
         ' '
       it "should return an <space> when there is no fix available (package mismatch)" $ do
-        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "bar" (UP.NOTVULNERABLE "1.0")]
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "bionic" "bar" (UP.NONVULNERABLE "1.0")]
         `shouldBe`
         ' '
       it "should return an <space> when there is no fix available (release mismatch)" $ do
-        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "trionic" "foo" (UP.NOTVULNERABLE "1.0")]
+        D.getFlagIsFixAvailable "bionic" "foo" [UP.Package "trionic" "foo" (UP.NONVULNERABLE "1.0")]
         `shouldBe`
         ' '
       it "should return an F when there is a fix available (multi-entry list)" $ do
         D.getFlagIsFixAvailable "bionic" "foo" [ UP.Package "bionic" "foo" (UP.VULNERABLE "1.0")
-                                               , UP.Package "bionic" "foo" (UP.NOTVULNERABLE "1.1") ]
+                                               , UP.Package "bionic" "foo" (UP.NONVULNERABLE "1.1") ]
         `shouldBe`
         'F'
       it "should return an <space> when there is no fix available (multi-entry list)" $ do
         D.getFlagIsFixAvailable "bionic" "foo" [ UP.Package "bionic" "foo" (UP.VULNERABLE "1.0")
-                                               , UP.Package "devel" "foo" (UP.NOTVULNERABLE "1.1") ]
+                                               , UP.Package "devel" "foo" (UP.NONVULNERABLE "1.1") ]
         `shouldBe`
         ' '
