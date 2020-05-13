@@ -22,7 +22,7 @@ import Control.Monad ((>=>))
 import Data.DebianSecurityAnalyzer.CVE (CVE (..), mapCVE)
 import Text.UbuntuSecurityTracker.CVE.Parser (parseWithErrors)
 import Data.UbuntuSecurityTracker.CVE.Token (Token)
-import Text.UbuntuSecurityTracker.CVE.ValidatorImpl (fillCVE)
+import Text.UbuntuSecurityTracker.CVE.Validator (fillCVE)
 
 parseAndValidate :: String -> String -> Either String CVE
 parseAndValidate filename content = first addFilenameToError $ parseAndValidate' content

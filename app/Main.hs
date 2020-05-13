@@ -35,7 +35,7 @@ import Data.DebianSecurityAnalyzer.CVE (CVE)
 import Text.DebianSecurityAnalyzer.Database (renderDebsecanDB)
 import Text.UbuntuSecurityTracker.CVE (parseAndValidate)
 import Text.UbuntuSecurityTracker.CVE.Parser (cveParser)
-import Text.UbuntuSecurityTracker.CVE.ValidatorImpl (fillCVE)
+import Text.UbuntuSecurityTracker.CVE.Validator (fillCVE)
 
 
 data ArgParser =
