@@ -28,9 +28,13 @@ dependencies:
 - text
 - cmdargs
 - utility-ht
+- containers
 - split
 - strict
 - zlib
+- mtl
+- download
+- lzma
 
 library:
   source-dirs: src
@@ -43,9 +47,6 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    - -static
-    cc-options: -static
-    ld-options: -static -pthread
     extra-lib-dirs: ./.system-work/lib
     dependencies:
     - ubuntu-cve-tracker2debsecan
