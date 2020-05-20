@@ -33,7 +33,15 @@ debsecan --source https://raw.githubusercontent.com/BBVA/ust2dsa/data/
 
 ### For database maintainers
 
-**TODO**
+#### Installation
+
+```sh
+sudo snap install ust2dsa
+```
+
+#### Usage
+
+TBD
 
 ## Data feed
 
