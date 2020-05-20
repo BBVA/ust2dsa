@@ -41,7 +41,17 @@ sudo snap install ust2dsa
 
 #### Usage
 
-TBD
+```sh
+        ust2dsa                                 \
+          --generic                             \
+          --release=groovy                      \
+          --release=focal                       \
+          --release=eoan                        \
+          --release=bionic                      \
+          --release=xenial                      \
+          --release=trusty                      \
+          /path/to/git-repo/of/ubuntu-cve-tracker/active/CVE-*
+```
 
 ## Data feed
 
