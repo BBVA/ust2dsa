@@ -23,6 +23,8 @@ import Data.DebianSecurityAnalyzer.CVE
 import qualified Data.UbuntuSecurityTracker.CVE.Package as UP
 import Data.Bool
 import Data.List
+import Data.Map (Map)
+import Data.Map.Strict (toList)
 import Data.Maybe
 
 renderVulnerability :: CVE -> String
@@ -49,8 +51,11 @@ renderPackage r o p CVE { affected = aps
     unstable_version = fromMaybe "" $ getUnstableVersion p aps
     other_versions = unwords $ getOtherVersions p aps
 
-renderDebsecanDB :: String -> [CVE] -> String
-renderDebsecanDB r cs = "VERSION 1\n" ++ sections
+renderSource :: (String, [String]) -> String
+renderSource (srcPackage, binPackages) = srcPackage ++ "," ++ (intercalate " " binPackages)
+
+renderDebsecanDB :: String -> [CVE] -> Map String [String] -> String
+renderDebsecanDB r cs srcs = "VERSION 1\n" ++ sections
   where
     sections = intercalate "\n\n" [ vulnerabilities, affected, sources ]
     vulnerabilities = intercalate "\n" $ fmap renderVulnerability cs
@@ -59,4 +64,4 @@ renderDebsecanDB r cs = "VERSION 1\n" ++ sections
       (i, c@CVE { affected = aps }) <- zip [0..] cs
       p <- nub $ UP.name <$> aps
       maybe [] return (renderPackage r i p c)
-    sources = ""
+    sources = intercalate "\n" $ fmap renderSource (toList srcs)
