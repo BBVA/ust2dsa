@@ -63,14 +63,16 @@ argparser =
 
 main = do
   args <- cmdArgs argparser
+  let onlycheck = check args
   let releases = release args
   let cveFiles = cves args
   let buildGeneric = generic args
   when (null cveFiles) $ die "You must specify at least one CVE source file"
-  when (null releases && not buildGeneric) $
+  when (null releases && not buildGeneric && not onlycheck) $
     die "You must specify at least one release to build or GENERIC"
   (errors, cves) <- partitionEithers <$> mapM parseFile cveFiles
   forM_ errors $ hPutStrLn stderr
+  when (onlycheck) $ die "check, please!"
   forM_ releases $ writeDBForRelease cves
   when buildGeneric $ writeOutput "GENERIC" $ renderDebsecanDB "" cves Map.empty
   where
