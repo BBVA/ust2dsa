@@ -93,7 +93,7 @@ sourcesFromURI vulnerables uri = do
     decompressToString = unpack . toStrict . decompress . fromStrict
 
 urisFromSuite :: String -> String -> [String]
-urisFromSuite base suite = do part1 <- ["", "-security", "-updates", "-proposed"]
+urisFromSuite base suite = do part1 <- ["", "-security", "-updates", "-proposed", "-backports"]
                               part2 <- ["main", "universe", "multiverse", "restricted"]
                               return $ base <> "/" <> suite <> part1 <> "/" <> part2 <> "/source/Sources.xz"
 

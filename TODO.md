@@ -16,7 +16,7 @@
 - [x] Implement CVSS parser
   - [ ] ~maybe contribute it to the Haskell community~: Does not apply: we just tested for one case
 - [ ] Implement Sources section
-	wget http://ftp.ubuntu.com/ubuntu/dists/{bionic,eoan,focal,groovy,trusty,xenial}{,-security,-updates,-proposed}/{main,universe,multiverse,restricted}/source/Sources.xz
+	wget http://ftp.ubuntu.com/ubuntu/dists/{bionic,eoan,focal,groovy,trusty,xenial}{,-security,-updates,-proposed,-backports}/{main,universe,multiverse,restricted}/source/Sources.xz
 - [ ] Cleanup: Move things around to improve readability
   - [x] Normalize naming of haskell source filenames (suffix Impl)
   - [x] Rename "not vulnerable" to "non-vulnerable"
