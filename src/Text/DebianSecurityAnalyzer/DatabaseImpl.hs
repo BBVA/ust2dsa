@@ -17,6 +17,7 @@ module Text.DebianSecurityAnalyzer.DatabaseImpl
   ( renderVulnerability
   , renderPackage
   , renderDebsecanDB
+  , renderSource
   ) where
 
 import Data.DebianSecurityAnalyzer.CVE

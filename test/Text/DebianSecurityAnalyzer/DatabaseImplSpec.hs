@@ -223,6 +223,11 @@ spec = do
           in renderPackage r 0 "package" cve
              `shouldSatisfy`
              \res -> maybe False (isPrefixOf "package,0,S  F") res
+  describe "SOURCE SECTION" $ do
+    it "should render an empty input" $
+      renderSource ("", []) `shouldBe` ","
+    it "should render a source pkg with two bin packages" $
+      renderSource ("foo", ["bar", "baz"]) `shouldBe` "foo,bar baz"
   describe "DATABASE FORMAT" $ do
     describe "renderDebsecanDB: renders according to Debsecan's db format" $ do
       it "should respect format (when empty)" $ do
@@ -287,3 +292,30 @@ spec = do
         in renderDebsecanDB "foo" [cve1, cve2] Map.empty
            `shouldBe`
            "VERSION 1\nCVE-1985-0609,,Foo bar!\nCVE-1974-0719,,Qux Quux!\n\nbaz,0,S   ,1.0,\nqux,1,S   ,1.5,2.0\n\n"
+      it "should render the sources map" $
+        let cve1 = CVE { name = "CVE-1985-0609"
+                       , description = "Foo bar!"
+                       , priority = Nothing
+                       , isRemote = Just False
+                       , affected = [ UP.Package { UP.name = "baz"
+                                                 , UP.release = "devel"
+                                                 , UP.status = UP.NONVULNERABLE "1.0"
+                                                 } ]
+                       }
+            cve2 = CVE { name = "CVE-1974-0719"
+                       , description = "Qux Quux!"
+                       , priority = Nothing
+                       , isRemote = Just False
+                       , affected = [ UP.Package { UP.name = "qux"
+                                                 , UP.release = "bionic"
+                                                 , UP.status = UP.NONVULNERABLE "2.0"
+                                                 }
+                                    , UP.Package { UP.name = "qux"
+                                                 , UP.release = "upstream"
+                                                 , UP.status = UP.NONVULNERABLE "1.5"
+                                                 } ]
+                       }
+            sources = Map.fromList [("foo", ["bar", "baz"]), ("qux", ["quux"])]
+        in renderDebsecanDB "foo" [cve1, cve2] sources
+           `shouldBe`
+           "VERSION 1\nCVE-1985-0609,,Foo bar!\nCVE-1974-0719,,Qux Quux!\n\nbaz,0,S   ,1.0,\nqux,1,S   ,1.5,2.0\n\nfoo,bar baz\nqux,quux"
