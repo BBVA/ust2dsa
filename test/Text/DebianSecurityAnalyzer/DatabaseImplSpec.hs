@@ -22,6 +22,7 @@ import Text.DebianSecurityAnalyzer.DatabaseImpl
 
 import Data.List.Split
 import Data.List
+import qualified Data.Map.Strict as Map
 import Data.Bool
 import Test.Hspec
 import Test.QuickCheck
@@ -225,7 +226,7 @@ spec = do
   describe "DATABASE FORMAT" $ do
     describe "renderDebsecanDB: renders according to Debsecan's db format" $ do
       it "should respect format (when empty)" $ do
-        renderDebsecanDB "foo" [] `shouldBe` "VERSION 1\n\n\n\n\n"
+        renderDebsecanDB "foo" [] Map.empty `shouldBe` "VERSION 1\n\n\n\n\n"
       it "should respect format (single affected package)" $
         let cve = CVE { name = "CVE-1985-0609"
                       , description = "Foo bar!"
@@ -236,7 +237,7 @@ spec = do
                                                 , UP.status = UP.VULNERABLE "1.0"
                                                 } ]
                       }
-        in renderDebsecanDB "foo" [cve]
+        in renderDebsecanDB "foo" [cve] Map.empty
            `shouldBe`
            "VERSION 1\nCVE-1985-0609,,Foo bar!\n\nbaz,0,S   ,,\n\n"
       it "should respect format (multiple affected package)" $
@@ -257,7 +258,7 @@ spec = do
                                                 , UP.status = UP.NONVULNERABLE "1.5"
                                                 }]
                       }
-        in renderDebsecanDB "foo" [cve]
+        in renderDebsecanDB "foo" [cve] Map.empty
            `shouldBe`
            "VERSION 1\nCVE-1985-0609,,Foo bar!\n\nbaz,0,S   ,1.0,\nqux,0,S   ,1.5,2.0\n\n"
       it "should respect format (multiple vulnerabilities)" $
@@ -283,6 +284,6 @@ spec = do
                                                  , UP.status = UP.NONVULNERABLE "1.5"
                                                  } ]
                        }
-        in renderDebsecanDB "foo" [cve1, cve2]
+        in renderDebsecanDB "foo" [cve1, cve2] Map.empty
            `shouldBe`
            "VERSION 1\nCVE-1985-0609,,Foo bar!\nCVE-1974-0719,,Qux Quux!\n\nbaz,0,S   ,1.0,\nqux,1,S   ,1.5,2.0\n\n"
