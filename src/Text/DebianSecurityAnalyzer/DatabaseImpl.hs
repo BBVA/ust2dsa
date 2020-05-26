@@ -53,7 +53,7 @@ renderPackage r o p CVE { affected = aps
     other_versions = unwords $ getOtherVersions p aps
 
 renderSource :: (String, [String]) -> String
-renderSource (srcPackage, binPackages) = srcPackage ++ "," ++ (intercalate " " binPackages)
+renderSource (srcPackage, binPackages) = srcPackage ++ "," ++ unwords binPackages
 
 renderDebsecanDB :: String -> [CVE] -> Map String [String] -> String
 renderDebsecanDB r cs srcs = "VERSION 1\n" ++ sections
