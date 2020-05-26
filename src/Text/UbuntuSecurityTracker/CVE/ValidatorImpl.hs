@@ -36,7 +36,8 @@ honorToken c (Metadata k v)
   | k == "Candidate" = Right c {name = Just v}
   | k == "Description" = Right c {description = Just v}
   | k == "Priority" =
-    if | v == "high" -> Right c {priority = Just H}
+    if | v == "critical" -> Right c {priority = Just H}
+       | v == "high" -> Right c {priority = Just H}
        | v == "medium" -> Right c {priority = Just M}
        | v == "low" -> Right c {priority = Just L}
        | v == "negligible" -> Right c {priority = Just L}
