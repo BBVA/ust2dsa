@@ -17,7 +17,7 @@ limitations under the License.
 
 module Main where
 
-import Control.Monad (forM_, mapM, when)
+import Control.Monad (forM_, mapM, unless, when)
 import Data.Bifunctor
 import Data.ByteString.Lazy (hPutStr)
 import Data.Either (fromLeft, fromRight, partitionEithers)
@@ -52,7 +52,7 @@ data ArgParser =
 
 argparser =
   ArgParser
-    { check = def &= help "Only check CVE cveFiles for errors"
+    { check = def &= help "Check CVE cveFiles for errors"
     , manifest = def &= help "Base URI to Ubuntu's release manifest"
     , release = def &= help "Ubuntu release codename"
     , generic = def &= help "Build a GENERIC database"
@@ -63,16 +63,15 @@ argparser =
 
 main = do
   args <- cmdArgs argparser
-  let onlycheck = check args
+  let doCheck = check args
   let releases = release args
   let cveFiles = cves args
   let buildGeneric = generic args
   when (null cveFiles) $ die "You must specify at least one CVE source file"
-  when (null releases && not buildGeneric && not onlycheck) $
+  unless ((not . null)  releases || buildGeneric || doCheck) $
     die "You must specify at least one release to build or GENERIC"
   (errors, cves) <- partitionEithers <$> mapM parseFile cveFiles
-  forM_ errors $ hPutStrLn stderr
-  when (onlycheck) $ die "check, please!"
+  when doCheck $ forM_ errors $ hPutStrLn stderr
   forM_ releases $ writeDBForRelease cves
   when buildGeneric $ writeOutput "GENERIC" $ renderDebsecanDB "" cves Map.empty
   where
