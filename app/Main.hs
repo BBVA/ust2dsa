@@ -59,7 +59,7 @@ argparser =
     , cves = def &= args
     } &=
   program "ust2dsa" &=
-  summary "Ubuntu Security Tracker ...."
+  summary "Produces debsecan databases from Ubuntu CVE Tracker data"
 
 main = do
   args <- cmdArgs argparser
