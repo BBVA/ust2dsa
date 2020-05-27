@@ -2,6 +2,7 @@
 
 ![License check](https://github.com/BBVA/ust2dsa/workflows/License%20check/badge.svg)
 ![Haskell CI](https://github.com/BBVA/ust2dsa/workflows/Haskell%20CI/badge.svg)
+[![ust2dsa](https://snapcraft.io//ust2dsa/badge.svg)](https://snapcraft.io/ust2dsa)
 
 
 This tool aims to enable Ubuntu users to leverage Debian's [`debsecan`][DEBSECAN]
