@@ -15,6 +15,9 @@ Note: any other string will cause the program to exit.
 
 The database has three sections, separated by an empty line.
 
+Also note that all three sections are lexicographically ordered.
+
+
 ### Section: List of vulnerabilities
 
 Contains lines with three comma-separated fields.
