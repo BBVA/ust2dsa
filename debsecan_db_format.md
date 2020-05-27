@@ -15,7 +15,7 @@ Note: any other string will cause the program to exit.
 
 The database has three sections, separated by an empty line.
 
-Also note that all three sections are lexicographically ordered.
+Also note that all three sections are lexicographically ordered, although this fact doesn't seem to be leveraged by debsecan's code in any way.
 
 
 ### Section: List of vulnerabilities
